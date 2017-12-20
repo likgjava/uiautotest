@@ -105,8 +105,52 @@ PS：不要直接删除本地插件包
 
 6、appium日志分析
 
+============================================================================================================================
+Android知识讲解
+1、ADB工具
+简介
+ADB的全称为Android Debug Bridge，字面意思就是安卓调试桥接，简单点说就是一个调试工具。它是Android系统提供的一套工具，通过它我们可以在电脑上建立一个连接到手机的通道，然后可以在电脑上向手机发送一些指令，完成一些我们需要做的工作。
+
+ADB常用命令
+1、adb devices 查看已经连接的android设备
+2、adb install Baidu.apk 将指定的apk文件安装到设备上
+3、adb uninstall Baidu.apk 这个是卸载应用
+4、adb shell 这个命令将登录设备的shell.后面加将是直接运行设备命令， 相当于执行远程命令
+
+2、UIAutomatorViewer工具
+UIAutomatorViewer是一个定位工具，在Android SDK目录下的tools/bin目录下。
+我们打开定位工具、模拟器后直接点击定位工具左上角红色圈出的按钮（获取当前屏幕）UIAutomatorViewer会自动获取到当前模拟器所打开的页面。
+最左边的区域就是捕获的模拟器页面，在该页面鼠标移到你要查找的元素上面，在整个区域右面上面就是当前对象的一个布局结构，能够清晰的看见他是采用的是什么布局。右下角的区域就是我们需要定位的对象的属性值
 
 
+3、Package及Activity讲解
+Package可以理解为APP的命名空间，是APP的唯一标示。我们在做APP自动化时，就需要知道他的Package，通过Package就可以定位到是哪个APP了。
+
+Activity是Android组件中最基本也是最为常见用的四大组件之一。和用户进行交互的，每当用户打开app进行操作的时候会发现在不断的跳页面，其实每个页面就是一个activity。我们做自动化时拿到了这个app的Package，但是我们还不能启动起来，因为我们没有告诉需要去操作哪一个Activity，因此在这个时候我们需要讲app启动时的Activity写入到启动参数中，如果你传入一个其他页面的是不行的。
+
+如何获取package及activity
+获取package和activity的方法，在网上说了有很多种，这里我只给大家说我们常用的。
+1、询问开发人员
+2、
+
+3、通过android sdk工具来，在sdk里面有一个工具，叫做aapt，我们可以直接通过这个工具来，在命令行输入：
+aapt dump badging xxxx.apk,后面这个xxx.apk文件是我们aok所在的绝对路径，敲入之后那么可以显示出来相关信息，可以在里面仔细找了，packageName、lanuchActivity这两个关键字。
+
+
+
+============================================================================================================================
+
+学习DesiredCapabilities
+简介
+DesiredCapabilities 携带了一些配置信息，在启动session的时候是必须提供，如启动模式、apk/app配置、package/activity配置、浏览器配置、键盘配置等。
+
+关键字
+DesiredCapabilities的重要作用是在启动时传递信息给Appium Server。
+下表中列举了Appium常用的 DesiredCapabilities 关键字。
+
+
+
+============================================================================================================================
 
 
 滑动
@@ -140,10 +184,10 @@ driver.swipe(x*9/10, y/2, x/10, y/2, 500);
 
 
 2.元素滑动
-
+--------------------------------------------------------------
 
 元素点击
-1.单击
+1).单击
 单击方式有四个。下面分别写个示例，如何定位就不写了，常见的点击是click()方法，不过手机最好用TouchAction来点击。
 element.click();
 element.tap(1, 300);
@@ -151,12 +195,24 @@ driver.tap(1, element, 300);
 new TouchAction(driver).tap(element).release().perform();
 
 
+2).多击
 
-2.多击
-
-3.长按
+3).长按
 new TouchAction(driver).longPress(element).release().perform();
 new TouchAction(driver).longPress(element, 100).release().perform();
+
+--------------------------------------------------------------
+输入框操作
+element.sendKeys("1234中国");
+driver.pressKeyCode(AndroidKeyCode.KEYCODE_A); // 字母“a”
+driver.pressKeyCode(AndroidKeyCode.DEL);
+
+
+--------------------------------------------------------------
+下拉框操作
+
+--------------------------------------------------------------
+屏幕放大缩小
 
 
 
@@ -177,6 +233,14 @@ http://blog.csdn.net/zhaoqi5705/article/details/53455597
 
 cnpm与npm的区别
 http://blog.csdn.net/chi1130/article/details/72773278
+
+
+
+
+资源
+http://www.cnblogs.com/fnng/p/4540731.html
+https://anikikun.gitbooks.io/appium-girls-tutorial/content/download_fulu.html 
+
 
 
 
