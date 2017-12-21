@@ -2,6 +2,7 @@ package com.likg.uiautotest;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterTest;
@@ -13,12 +14,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
-public class PageSwipe {
+public class Swipe {
 
     private AndroidDriver<AndroidElement> driver;
 
     @Test
-    public void swipe() throws InterruptedException {
+    public void pageSwipe() throws InterruptedException {
         System.out.println("helloWorld........");
 
         Dimension dimension = driver.manage().window().getSize();
@@ -35,6 +36,28 @@ public class PageSwipe {
 
         //从下往上滑动
         driver.swipe(x/2, y*9/10, x/2, y/10, 500);
+        Thread.sleep(10000);
+    }
+
+    @Test
+    public void elementSwipe() throws InterruptedException {
+        System.out.println("helloWorld........");
+
+        //获取元素信息
+        AndroidElement element = driver.findElement(By.xpath("//android.widget.FrameLayout[@index=2]"));
+        int x = element.getLocation().getX();
+        int y = element.getLocation().getY();
+        int width = element.getSize().getWidth();
+        int height = element.getSize().getHeight();
+
+        //计算起止位置坐标
+        int startX = x + width * 9 / 10;
+        int startY = y + height / 2;
+        int endX = x + width / 10;
+        int endY = startY;
+
+        //从右往左滑
+        driver.swipe(startX, startY, endX, endY, 500);
         Thread.sleep(10000);
     }
 
