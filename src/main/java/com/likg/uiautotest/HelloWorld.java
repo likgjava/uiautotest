@@ -24,20 +24,16 @@ public class HelloWorld {
 
     @Test
     public void swipe() throws InterruptedException {
-        log.error("1111111111111111111111111111111111111111111");
         System.out.println("helloWorld........");
+        Thread.sleep(10000);
 
+        //获取屏幕的宽度和高度
         int x = driver.manage().window().getSize().getWidth();
         int y = driver.manage().window().getSize().getHeight();
         System.out.println("x===="+x);
         System.out.println("y===="+y);
 
-        Thread.sleep(10000);
-
         driver.swipe(x * 9/10, y/2, x/10, y/2, 500);
-        //driver.swipe(900, 500, 100, 500, 200);
-        //driver.swipe(900, 500, -100, 0, 200);
-        System.out.println("...............................1111111111..........................");
         Thread.sleep(10000);
         driver.swipe(x * 9/10, y/2, x/10, y/2, 500);
         Thread.sleep(3000);
