@@ -2,7 +2,7 @@
 
 移动自动化测试
 1.1移动自动化测试简介
-随着互联网技术的飞速发展，软件行业也变得越来越发达。使用软件的用户和软件的使用频率也在不断增多，所以对软件质量的要求也随之提高。考虑到成本、效率等因素，企业目前对自动化测试的重视度越来越高。软件测试这个行业都走向了自动化这条路。对于现在的我们来说自动化测试是我们必须掌握的技能，同时它也是这个行业的一种发展趋势，当然你想要提高到更高的一个档次可以往测试开发走，我坚信你能够走得更远。
+随着互联网技术的飞速发展，软件行业也变得越来越发达。使用软件的用户和软件的使用频率也在不断增多，所以对软件质量的要求也随之提高。考虑到成本、效率等因素，企业目前对自动化测试的重视度越来越高。软件测试这个行业都走向了自动化这条路，对于现在的我们来说自动化测试是我们必须掌握的技能，同时它也是这个行业的一种发展趋势。自动化测试是一个接近测试开发的工作。
 
 
 1.2移动自动化测试工具有哪些？
@@ -23,14 +23,11 @@ Server也是跨平台的，你可以使用Mac OS X、Windows或者Linux；
 
 设计理念：
 C/S架构，appium的核心是一个web服务器，它提供了一套REST的接口，他会接收客户端的连接，监听到命令。执行会再将结果通过HTTP响应返还给客户端。
-
 session，每个client连接到server以后都会创建一个session，自动化始终围绕一个session进行。不同语言有不同实现方式，但最终都是发送一个POST请求给服务端，请求中包含一个JSON对象。
-Desired Capabilities，其实就是一个键值对，设置一些测试的相关信息来告诉Server端，我们需要测试iOS、还是Android，或者换是WebApp等信息。
 Appium Server是Node.js写的，所以可以直接用NPM来进行安装。
 
-
 相关限制：
-如果你在Windows使用Appium，你没法使用预编译专用于OS X的.app文件，因为Appium依赖OS X专用的库来支持iOS测试，所以在Windows平台你不能测试iOS Apps。这意味着你只能通过在Mac上来运行iOS测试。
+如果你在Windows使用Appium，你没法使用预编译专用于OS X的.app文件，因为Appium依赖OS X专用的库来支持iOS测试，所以在Windows平台你不能测试iOS Apps。
 
 
 
@@ -43,8 +40,8 @@ Appium Server是Node.js写的，所以可以直接用NPM来进行安装。
 appium环境搭建
 
 1、安装JDK
-版本：1.7
-下载地址：http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html
+版本：1.8
+下载地址：http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 配置环境变量：
 JAVA_HOME=C:\Program Files\Java\jdk1.7.0_80
 在Path中添加:%JAVA_HOME%\bin;
@@ -66,7 +63,7 @@ ANDROID_HOME=D:\software\Android\Sdk
 4）VirtualBox下载地址：http://download.virtualbox.org/virtualbox/5.1.30/VirtualBox-5.1.30-118389-Win.exe
 注意事项：
 1、最好不要改变VirtualBox的安装路径
-1、enabled in BIOS settings
+2、enabled in BIOS settings，开机启动时设置virtualization technology的选项为Enabled。
 
 
 异常：Failure [INSTALL_FAILED_NO_MATCHING_ABIS]
@@ -86,7 +83,7 @@ appium有两种安装模式:
 通过终端安装
 
 区别：
-做自动化肯定不可能只是在一台机器上做自动化，因为那样的意义并不是很大，所以很多时候我们都是链接多台电脑去执行，但是appium去链接多台电脑时就需要启动多个appium的服务，如果说你安装是通过客户端去安装的，你链接多台机器就需要启动多次，配置多次，这样对你电脑本身也是一个性能考验。如果你是通过终端命令安装的在启动的时候你只需要通过命令启动多个服务就好。
+在做自动化时，很多时候我们都是连接多台电脑去执行，但是appium去连接多台电脑时就需要启动多个appium的服务，如果说你安装是通过客户端去安装的，你连接多台机器就需要启动多个客户端，这样对你电脑本身也是一个性能考验。如果你是通过终端命令安装的在启动的时候你只需要通过命令启动多个服务就好。
 
 appium客户端安装：
 官方下载：http://appium.io/
@@ -358,9 +355,330 @@ touchAction.press(one).moveTo(two).moveTo(five).moveTo(eight).moveTo(nine).relea
 
 
 
+===================================================================================================================================
+
+TestNG
+简介
+TestNG是java的一个测试框架，Java中已经有一个JUnit的测试框架，但TestNG比JUnit功能强大的多。JAVA测试人员一般用TestNG来写自动化测试。
+TestNG是用来简化广泛的测试需求的测试框架，从单元测试到集成测试。
+
+安装
+高版本的IDEA已经绑定了TestNG，不需要安装额外的插件。
+
+TestNG基本注解
+注解	描述
+@BeforeSuite	被注解的方法只运行一次，运行此套件中所有测试方法前运行
+@AfterSuite	被注解的方法只运行一次，运行完此套件的所有测试方法后运行
+@BeforeTest	被注解的方法只运行一次，运行在此套件前
+@AfterTest	被注解的方法只运行一次，运行在此套件后
+@BeforeClass	被注解的方法只运行一次，运行在此套件的类前
+@AfterClass	被注解的方法只运行一次，运行在此套件的类后
+@BeforeGroups	被注解的方法运行次数与@Groups个数有关，运行在此套件的所有@Groups前
+@AfterGroups	被注解的方法运行次数与@Groups个数有关，运行在此套件的所有@Groups后
+@BeforeMethod	被注解的方法运行次数与@Test个数有关，在运行@Test前运行，如果有n个@Test则运行n次
+@AfterMethod	被注解的方法运行次数与@Test个数有关，在运行@Test后运行，如果有n个@Test则运行n次
+@DataProvider	为一个方法提供数据，必须返回Object[][]，如果一个方法想获取数据，使用dataProvider结束数据
+@Factory	作为一个工厂，返回TestNG的测试类对象，该方法必须返回Object[]
+@Listeners	定义一个测试类的监听器
+@Parameters	介绍如何将参赛传递给@Test方法
+@Test	测试类或方法
+
+
+使用方式
+忽略测试
+如果我们的代码没写好或测试方法无法运行，这时我们需要禁用此方法。
+@Test(enabled = false)
+public void bar(){
+	System.out.println("bar...");
+}
+
+
+异常测试
+异常测试需要被注解的测试方法能够抛出异常，否则执行失败
+@Test(expectedExceptions = ArithmeticException.class)
+public void divByZeroTest() {
+	int count = this.div(10, 0);
+	System.out.println("count=" + count);
+}
+public int div(int a, int b) {
+	return a / b;
+}
+
+依赖测试
+有时测试方法有先后顺序，这时后执行的方法就需要依赖先执行的方法了
+public class DependTest {
+    @Test
+    public void openApp() {
+        System.out.println("openApp...");
+    }
+
+    @Test(dependsOnMethods = "openApp")
+    public void inputUsername() {
+        System.out.println("inputUsername...");
+    }
+
+    @Test(dependsOnMethods = "inputUsername")
+    public void login() {
+        System.out.println("login...");
+    }
+}
+
+参数化
+1.注解方式
+public class DataProviderTest {
+    @DataProvider
+    public Object[][] userData() {
+        return new Object[][]{new Object[]{1, "tom"}, new Object[]{2, "lucy"}};
+    }
+
+    @Test(dataProvider = "userData")
+    public void printUserList(int userId, String username) {
+        System.out.println("userId=" + userId + "\tusername=" + username);
+    }
+}
+
+2.读取XML中的参数
+public class XmlParameterTest {
+    @Test
+    @Parameters("username")
+    public void test(String name) {
+        System.out.println("username=" + name);
+    }
+}
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="suite">
+    <test name="test">
+        <parameter name="username" value="tom"/>
+        <classes>
+            <class name="com.likg.uiautotest.testng.XmlParameterTest"/>
+        </classes>
+    </test>
+</suite>
+
+
+TestNG套件
+TestNG套件是一组测试行为的集合。写在XML中，套件可以包含一个或多个测试。<suite>是根标签，它描述了一个测试套件。
+
+suite属性
+参数	说明	参数值	使用方法
+name	必选项，此套件的名称	suite名字	name="XXX"
+junit	是否执行Junit模式(识别setup()等)	true和false，默认false	junit="true"
+verbose	控制台输出的详细内容等级,0-10级（0无，10最详细）	0到10	verbose="5"
+parallel	是否在不同的线程并行进行测试，要与thread-count配套使用	详见表格下内容，默认false	parallel="mehods"
+configfailurepolicy	测试失败后是再次执行还是跳过，值skip和continue	skip、continue，默认skip	configfailurepolicy="skip"
+thread-count	与parallel配套使用，线程池的大小，决定并行线程数量	整数，默认5	thread-count="10"
+annotations	获取注解，值为javadoc时，使用JavaDoc的注释；否则用JDK5注释	javadoc	annotations="javadoc"
+time-out	设置parallel时，终止执行单元之前的等待时间（毫秒）	整数，单位毫秒	time-out="10000"
+skipfailedinvocationcounts	是否跳过失败的调用	true和false，默认false	skipfailedinvocationcounts="true"
+data-provider-thread-count	并发时data-provider的线程池数量	整数	data-provider-thread-count="5"
+object-factory	一个实现IObjectFactory接口的类，实例化测试对象	类名	object-factory="classname"
+allow-return-values	是否允许返回函数值	true和false	all-return-values="true"
+preserve-order	是否按照排序执行	true和false，默认true	preserve-order="true"
+group-by-instances	按照实例分组	true和false，默认false	group-by-instances="true"
+
+
+TestNG运行JUnit
+TestNG可以运行JUnit测试类，需要把属性junit设置为true。运行JUnit的testng.xml如下
+package com.likg.uiautotest.testng;
+import org.junit.Test;
+/**
+ * junit测试类
+ * @author likg
+ */
+public class JunitTest {
+    @Test
+    public void foo(){
+        System.out.println("foo...");
+    }
+}
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="suite" junit="true">
+    <test name="test">
+        <classes>
+            <class name="com.likg.uiautotest.testng.JunitTest"/>
+        </classes>
+    </test>
+</suite>
+
+
+顺序执行
+如果有多个@test我们需要给这些test规定执行顺序，那么我们应该这么写testng.xml
+public class TestngOrder {
+    @Test
+    public void one(){
+        System.out.println("one...");
+    }
+
+    @Test
+    public void two(){
+        System.out.println("two...");
+    }
+
+    @Test
+    public void three(){
+        System.out.println("three...");
+    }
+
+    @Test
+    public void four(){
+        System.out.println("four...");
+    }
+}
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="suite">
+    <test name="test">
+        <classes>
+            <class name="com.likg.uiautotest.testng.TestngOrder">
+                <methods>
+                    <include name="one" />
+                    <include name="two" />
+                    <include name="three" />
+                    <include name="four" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
+
+
+组测试
+将相似的测试方法合并到一起。组测试要写在testng.xml的<test>或<suite>中
+在TestNG中，组groups的概念主要是相对于测试方法而言的。将具有相似功能的测试方法分组，这样在定义测试用例的时候就可以以组为单位加入对应的测试方法。
+示例一
+public class TestngGroups {
+    @Test(groups = {"g1"})
+    public void f1() {
+        System.err.println("groups=g1 f1...");
+    }
+
+    @Test(groups = {"g2"})
+    public void f2() {
+        System.err.println("groups=g2 f2...");
+    }
+
+    @Test(groups = {"g1", "g2"})
+    public void f3() {
+        System.err.println("groups=g1,g2 f3...");
+    }
+
+    @Test(groups = {"g1", "g2"})
+    public void f4() {
+        System.err.println("groups=g1,g2 f4...");
+    }
+}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="suite">
+    <test name="TestGroups">
+        <groups>
+            <run>
+                <include name="g1"/>
+                <exclude name="g2"/>
+            </run>
+        </groups>
+
+        <classes>
+            <class name="com.likg.uiautotest.testng.TestngGroups"/>
+        </classes>
+    </test>
+</suite>
+
+示例二
+public class TestngGroupsOfGroups {
+    @Test(groups = {"android.4"})
+    public void f1() {
+        System.err.println("groups=android.4 f1...");
+    }
+
+    @Test(groups = {"android.5"})
+    public void f2() {
+        System.err.println("groups=android.5 f2...");
+    }
+
+    @Test(groups = {"android.5.2"})
+    public void f3() {
+        System.err.println("groups=android.5.2 f3...");
+    }
+
+    @Test(groups = {"android.6"})
+    public void f4() {
+        System.err.println("groups=android.6 f4...");
+    }
+}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="suite">
+    <test name="groupsOfGroups">
+        <groups>
+            <define name="android4">
+                <include name="android.4"/>
+            </define>
+            <define name="android5">
+                <include name="android.5"/>
+                <include name="android.5.2"/>
+            </define>
+            <define name="all">
+                <include name="android.*"/>
+            </define>
+            <run>
+                <include name="all"/>
+                <exclude name="android5"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.likg.uiautotest.testng.TestngGroupsOfGroups"/>
+        </classes>
+    </test>
+</suite>
 
 
 
+断言
+断言是预期结果与实际结果之间的比较。可以传递的参数有字符串、数组、数据类型等。下面举几个例子。
+public class AssertTest {
+    @Test
+    public void foo(){
+        int sum = this.add(1, 1);
+        Assert.assertEquals(sum, 2);
+        Assert.assertNotEquals(sum, 3);
+        Assert.assertTrue(true);
+        Assert.assertFalse(false);
+    }
+
+    public int add(int a, int b){
+        return a + b;
+    }
+}
+
+
+生成测试报告
+IEDA中生成测试报告配置
+1、点击工具条中Run，选择Edit Configurations，弹出运行配置对话框，在左侧选择要设置运行的test，在右侧选择Configuration的Listeners项，将Listeners中的use Default reporters前的选择框打上对号，然后点击ok。
+2、重新运行test，就会生产test-output文件了。
+
+
+
+===================================================================================================================================
+
+其他知识点：
+横竖屏切换
+截图操作
+
+
+
+
+
+
+
+
+
+===================================================================================================================================
 http://blog.csdn.net/wukuy123/article/details/73744784
 
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="suite">
+    <test name="TestGroups">
+        <groups>
+            <run>
+                <include name="g1"/>
+                <exclude name="g2"/>
+            </run>
+        </groups>
+
+        <classes>
+            <class name="com.likg.uiautotest.testng.TestngGroups"/>
+        </classes>
+    </test>
+</suite>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="suite">
+    <test name="test">
+        <classes>
+            <class name="com.likg.uiautotest.testng.TestngOrder">
+                <methods>
+                    <include name="one" />
+                    <include name="two" />
+                    <include name="three" />
+                    <include name="four" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

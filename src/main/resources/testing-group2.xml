@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="suite">
+    <test name="groupsOfGroups">
+        <groups>
+            <define name="android4">
+                <include name="android.4"/>
+            </define>
+            <define name="android5">
+                <include name="android.5"/>
+                <include name="android.5.2"/>
+            </define>
+            <define name="all">
+                <include name="android.*"/>
+            </define>
+            <run>
+                <include name="all"/>
+                <exclude name="android5"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.likg.uiautotest.testng.TestngGroupsOfGroups"/>
+        </classes>
+    </test>
+</suite>
