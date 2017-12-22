@@ -1,11 +1,7 @@
 package com.likg.uiautotest;
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
-import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.Logger;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -18,9 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 public class HelloWorld {
 
-    private static Logger log  =  Logger.getLogger(HelloWorld.class );
-
-    AndroidDriver<AndroidElement> driver;
+    private AndroidDriver<AndroidElement> driver;
 
     @Test
     public void swipe() throws InterruptedException {
@@ -28,25 +22,24 @@ public class HelloWorld {
         Thread.sleep(10000);
 
         //获取屏幕的宽度和高度
-        int x = driver.manage().window().getSize().getWidth();
-        int y = driver.manage().window().getSize().getHeight();
-        System.out.println("x===="+x);
-        System.out.println("y===="+y);
+        int width = driver.manage().window().getSize().getWidth();
+        int height = driver.manage().window().getSize().getHeight();
+        System.out.println("width===="+width);
+        System.out.println("height===="+height);
 
-        driver.swipe(x * 9/10, y/2, x/10, y/2, 500);
+        driver.swipe(width * 9/10, height/2, width/10, height/2, 500);
         Thread.sleep(10000);
-        driver.swipe(x * 9/10, y/2, x/10, y/2, 500);
+        driver.swipe(width * 9/10, height/2, width/10, height/2, 500);
         Thread.sleep(3000);
     }
 
     @BeforeTest
     public void  beforeTest() throws MalformedURLException {
         System.out.println("beforeTest....");
-        DesiredCapabilities capabilities = new DesiredCapabilities();
 
         File apk = new File("D://apk/zhihu.apk");
-        System.out.println(apk.exists());
 
+        DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("deviceName", "xiaomi");
         capabilities.setCapability("app", apk.getAbsolutePath());
         URL url = new URL("http://127.0.0.1:4723/wd/hub/");
@@ -55,26 +48,11 @@ public class HelloWorld {
         System.out.println("2222222");
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         System.out.println("333333333333333333333333");
-
-
-        // set up appium
-        /*File app = new File("D://apk/ContactManager.apk");
-        capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
-        capabilities.setCapability("platformName", "Android");
-        capabilities.setCapability("deviceName","Android Emulator");
-        capabilities.setCapability("platformVersion", "7.1.1");
-        capabilities.setCapability("app", app.getAbsolutePath());
-        capabilities.setCapability("appPackage", "com.example.android.contactmanager");
-        capabilities.setCapability("appActivity", ".ContactManager");
-        driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-        System.out.println("333333333333333333333333");*/
-
     }
 
     @AfterTest
     public void afterTest(){
         driver.quit();
     }
-
 
 }

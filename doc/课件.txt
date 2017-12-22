@@ -22,13 +22,12 @@ Server也是跨平台的，你可以使用Mac OS X、Windows或者Linux；
 支持很多语言来编写测试脚本，Java、Javascript、PHP、Python、C#、Ruby等主流语言；
 
 设计理念：
-C/S架构，appium的核心是一个web服务器，它提供了一套REST的接口，他会接收客户端的连接，监听到命令。执行会再将结果通过HTTP响应返还给客户端。
+C/S架构，appium的核心是一个web服务器，它提供了一套REST的接口，他会接收客户端的连接，监听到命令。执行后再将结果通过HTTP响应返还给客户端。
 session，每个client连接到server以后都会创建一个session，自动化始终围绕一个session进行。不同语言有不同实现方式，但最终都是发送一个POST请求给服务端，请求中包含一个JSON对象。
 Appium Server是Node.js写的，所以可以直接用NPM来进行安装。
 
 相关限制：
 如果你在Windows使用Appium，你没法使用预编译专用于OS X的.app文件，因为Appium依赖OS X专用的库来支持iOS测试，所以在Windows平台你不能测试iOS Apps。
-
 
 
 1.4论本课程的重要性
@@ -43,7 +42,7 @@ appium环境搭建
 版本：1.8
 下载地址：http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 配置环境变量：
-JAVA_HOME=C:\Program Files\Java\jdk1.7.0_80
+JAVA_HOME=C:\Program Files\Java\jdk1.8.0_151
 在Path中添加:%JAVA_HOME%\bin;
 
 2、安装IDEA
@@ -101,7 +100,7 @@ cnpm install -g appium
 npm与cnpm
 npm（node package manager）是nodejs的包管理器，用于node插件管理（包括安装、卸载、管理依赖等）
 1.安装插件：npm install <name> [-g] [--save-dev]
-<name>：node插件名称。 
+<name>：node插件名称。
 例：npm install appium --save-dev
 -g：全局安装。 
 将会安装在C:\Users\Administrator\AppData\Roaming\npm，并且写入系统环境变量；非全局安装：将会安装在当前定位目录；全局安装可以通过命令行在任何地方调用它，本地安装将安装在定位目录的node_modules文件夹下，通过require()调用；
