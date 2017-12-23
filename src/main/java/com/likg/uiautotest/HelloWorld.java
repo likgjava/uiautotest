@@ -38,16 +38,13 @@ public class HelloWorld {
         System.out.println("beforeTest....");
 
         File apk = new File("D://apk/zhihu.apk");
-
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("deviceName", "xiaomi");
+        capabilities.setCapability("deviceName", "mi");
         capabilities.setCapability("app", apk.getAbsolutePath());
+
         URL url = new URL("http://127.0.0.1:4723/wd/hub/");
-        System.out.println("11111111111");
         driver = new AndroidDriver<AndroidElement>(url, capabilities);
-        System.out.println("2222222");
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        System.out.println("333333333333333333333333");
     }
 
     @AfterTest

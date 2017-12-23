@@ -1,4 +1,4 @@
-package com.likg.uiautotest;
+package com.likg.uiautotest.bak;
 
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
@@ -13,63 +13,48 @@ import org.testng.annotations.Test;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/**
- * 点击、多击、长按
- */
 public class Click {
 
-    private AndroidDriver<AndroidElement> driver;
+    private static Logger log  =  Logger.getLogger(Click. class );
 
-    //单击
+    //protected final Log log = LogFactory.getLog(getClass());
+
+    AndroidDriver<AndroidElement> driver;
+
     @Test
     public void click() throws InterruptedException {
+        log.error("1111111111111111111111111111111111111111111");
+        System.out.println("helloWorld........");
+
+        int x = driver.manage().window().getSize().getWidth();
+        int y = driver.manage().window().getSize().getHeight();
+        System.out.println("x===="+x);
+        System.out.println("y===="+y);
+
         Thread.sleep(10000);
 
-        //点击显示键盘按钮
-        AndroidElement button = driver.findElement(By.id("com.android.dialer:id/floating_action_button_container"));
-        button.click();
-        Thread.sleep(3000);
-
-        //点击号码
-        AndroidElement one = driver.findElement(By.id("com.android.dialer:id/one"));
-        AndroidElement two = driver.findElement(By.id("com.android.dialer:id/two"));
-        AndroidElement three = driver.findElement(By.id("com.android.dialer:id/three"));
-        one.tap(1, 100);
-        driver.tap(1, two, 100);
-        new TouchAction(driver).tap(three).release().perform();
-        Thread.sleep(10000);
-    }
-
-    //多击
-    @Test
-    public void multiClick() throws InterruptedException {
-        System.out.println("multiClick...");
-        Thread.sleep(10000);
-
-        //点击显示键盘按钮
-        AndroidElement button = driver.findElement(By.id("com.android.dialer:id/floating_action_button_container"));
-        button.click();
-        Thread.sleep(3000);
-
-        //点击号码
-        AndroidElement one = driver.findElement(By.id("com.android.dialer:id/one"));
-        AndroidElement two = driver.findElement(By.id("com.android.dialer:id/two"));
-        AndroidElement three = driver.findElement(By.id("com.android.dialer:id/three"));
-        //one.tap(3, 100);
-        //driver.tap(3, two, 1000);
-        new TouchAction(driver).press(three).waitAction(30).release().press(three).waitAction(30).release().press(three).waitAction(30).release().perform();
+        AndroidElement element = driver.findElement(By.xpath("//android.view.ViewGroup[@index=2]"));
+        System.out.println(element.getTagName());
+        element.click();
         Thread.sleep(10000);
     }
 
     @Test
     public void longPress() throws InterruptedException {
-        System.out.println("longPress...");
+        log.error("1111111111111111111111111111111111111111111");
+        System.out.println("helloWorld........");
 
-        this.multiClick();
+        int x = driver.manage().window().getSize().getWidth();
+        int y = driver.manage().window().getSize().getHeight();
+        System.out.println("x===="+x);
+        System.out.println("y===="+y);
 
-        AndroidElement deleteButton = driver.findElementById("com.android.dialer:id/deleteButton");
+        Thread.sleep(10000);
+
+        AndroidElement element = driver.findElement(By.xpath("//android.view.ViewGroup[@index=2]"));
+        System.out.println(element.getTagName());
         TouchAction touchAction = new TouchAction(driver);
-        touchAction.longPress(deleteButton).release().perform();
+        touchAction.longPress(element).release().perform();
         Thread.sleep(10000);
     }
 
@@ -98,8 +83,8 @@ public class Click {
         capabilities.setCapability("deviceName","Android Emulator");
         capabilities.setCapability("platformVersion", "6.0");
         //capabilities.setCapability("app", app.getAbsolutePath());
-        capabilities.setCapability("appPackage", "com.android.dialer");
-        capabilities.setCapability("appActivity", ".DialtactsActivity");
+        capabilities.setCapability("appPackage", "com.android.contacts");
+        capabilities.setCapability("appActivity", ".activities.PeopleActivity");
         driver = new AndroidDriver<AndroidElement>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
         System.out.println("333333333333333333333333");
 

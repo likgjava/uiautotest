@@ -180,27 +180,15 @@ Activity是Android组件中最基本也是最为常见用的四大组件之一�
 package: name='com.zhihu.android'
 launchable-activity: name='com.zhihu.android.app.ui.activity.MainActivity'
 
-3、
-
-2.日志法
+3、日志法
 a、启动待测apk
 b、开启日志输出：adb logcat>D:/log.txt
 c、关闭日志输出：ctrl+c
 d、查看日志
 直接搜索 ：Displayed
-找寻：Displayed com.mm.android.hsy/.ui.LoginActivity: +3s859ms
-appPackage = com.mm.android.hsy
-appActivity = .ui.LoginActivity
-
-我一直用的方法是：
-adb shell
-logcat | grep cmp=
-
-自己用的简洁版：
-
-adb logcat|find "Displayed" >d:/logs.txt
-
-adb logcat|findstr /I "\.*activity" 
+找寻：Displayed com.android.messaging/.ui.conversationlist.ConversationListActivity: +1s493ms
+appPackage = com.android.messaging
+appActivity = .ui.conversationlist.ConversationListActivity
 
 
 
@@ -255,8 +243,8 @@ new TouchAction(driver).tap(element).release().perform();
 
 
 2).多击
-element.tap(2, 30);
-driver.tap(2, element, 30);
+//element.tap(2, 30);
+//driver.tap(2, element, 30);
 new TouchAction(driver).press(element).waitAction(30).release().press(element).waitAction(30).release().perform();
 
 
@@ -349,8 +337,20 @@ touchAction.press(one).moveTo(two).moveTo(five).moveTo(eight).moveTo(nine).relea
 --------------------------------------------------------------
 屏幕放大缩小
 
+--------------------------------------------------------------
+横竖屏切换
+driver.rotate(ScreenOrientation.LANDSCAPE);
+driver.rotate(ScreenOrientation.PORTRAIT);
 
 
+
+
+--------------------------------------------------------------
+截图操作
+截图功能非常重要，尤其是在页面出现异常的时候，我们需要截图来保留现场。我们可以每个操作都截图，一般情况下我们只有在出现异常的时候才会截图。
+File screenshot = driver.getScreenshotAs(OutputType.FILE);
+File destFile = new File("D:/screenshot/a.png");
+FileUtils.copyFile(screenshot, destFile);
 
 
 
@@ -666,12 +666,16 @@ IEDA中生成测试报告配置
 ===================================================================================================================================
 
 其他知识点：
-横竖屏切换
-截图操作
 
 
+等待技巧
+混合APP测试
+异常处理，testng监听
 
-
+PO技术和方法封装
+数据读写（Excel、xml、properties、数据库）
+并发测试
+数据驱动、关键字驱动
 
 
 
