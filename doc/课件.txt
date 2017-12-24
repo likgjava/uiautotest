@@ -665,15 +665,315 @@ IEDA中生成测试报告配置
 
 ===================================================================================================================================
 
+等待技巧
+我们的代码执行很快，但有时由于网速、手机硬件等原因加载需要时间。所以我们需要等待页面加载。
+在appium中有三种等待方式。每个等待方式都有不同的用处，在前面的代码中为了让读者更清晰的看到代码执行的效果，用的最多的一个等待方式是强制等待，即要求等多久就等多久。
+强制等待缺点比较明显，就是我们无法确定应该设置多长时间最优。比如说我设置了10秒。结果5秒加载完成。还会再等5秒，无疑浪费了5秒的时间。同样10秒没加载完成他依然继续执行后续代码。
+
+强制等待
+强制等待使用的是JAVA自己的等待，Thread.sleep()方法。
+
+
+隐示等待
+隐示等待是等待页面加载时间，我们设置一个超时时间，如果在设置的时间内页面加载完成就立即继续执行。如果一直不能完全加载，规定时间到后会报出异常。
+
+
+此处设置是全局设置。
+pageLoadTimeout是等待页面加载。
+implicitlyWait是识别对象超时时间，如果在规定的时间内无法定位元素就报错
+setScriptTimeout设置异步脚本超时时间，也就是有async属性的JS脚本。
+driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
+driver.manage().timeouts().wait(10);
+
+
+显示等待
+显示等待就是等待我们下一个需要定位的元素，元素出现就停止等待，开始执行代码。
+//设置等待10s，每2s检查一次元素是否加载成功
+WebDriverWait wait = new WebDriverWait(driver, 10, 2000);
+wait.until(new ExpectedCondition<WebElement>() {
+	public WebElement apply(WebDriver webDriver) {
+		return webDriver.findElement(By.name("赞"));
+	}
+}).click();
+
+
+===================================================================================================================================
+
+异常处理
+当我们测试代码出现异常时我我们需要做一些处理，比如：截图、重试、输出日志等。
+本章内容依然与TestNG有关，我们需要重写TestNG的TestListenerAdapter类中的方法。
+失败截图
+我们testng运行结果是否成功需要监听，监听到失败的结果再做操作。TestNG源码中的监听类显然不满足我们的需求，所以我们要重写这个方法。
+TestNG监听类重写运行失败方法源码
+
+
+
+
+===================================================================================================================================
+
+
+数据读写
+XML读写
+读写xml文件需要用到的一个jar包是dom4j。
+1.读XML文件
+思路分析
+-不使用框架
+-使用框架
+@Test
+public void read() throws DocumentException {
+	SAXReader reader = new SAXReader();
+	Document document = reader.read(new File("data/student-list.xml"));
+
+	Element rootElement = document.getRootElement();
+	String rootElementName = rootElement.getName();
+	System.out.println(rootElementName);
+
+	List<Element> elementList = rootElement.elements();
+	for (Element studentElement : elementList) {
+		String id = studentElement.attributeValue("id");
+		String name = studentElement.element("name").getText();
+		String age = studentElement.element("age").getText();
+		System.out.println(id);
+		System.out.println(name);
+		System.out.println(age);
+		System.out.println();
+	}
+}
+
+2.写XML文件
+@Test
+public void write() throws Exception {
+	SAXReader reader = new SAXReader();
+	Document document = reader.read(new File("data/student-list.xml"));
+
+	Element rootElement = document.getRootElement();
+	String rootElementName = rootElement.getName();
+	System.out.println(rootElementName);
+
+	Element studentElement = rootElement.addElement("student");
+	studentElement.addAttribute("id", "3");
+	Element nameElement = studentElement.addElement("name");
+	nameElement.setText("宋小宝 ");
+	studentElement.addElement("age").setText("18");
+
+	OutputFormat format = new OutputFormat("\t", true, "UTF-8");
+	format.setTrimText(true);
+
+	XMLWriter xmlWriter = new XMLWriter(new FileOutputStream(new File("data/student-list.xml")), format);
+	xmlWriter.write(document);
+	xmlWriter.close();
+}
+
+
+资源文件读写
+有时一些数据需要打到程序包中，轻易不会更改。而写在代码里又不方便维护就需要写配置文件了。properties是java自带的数据文件。不需要额外的jar包支持。
+1.读properties文件
+思路分析
+@Test
+public void read() throws IOException {
+	Properties prop = new Properties();
+	prop.load(new FileInputStream("data/conf.properties"));
+
+	String username = prop.getProperty("username");
+	String password = prop.getProperty("password");
+	String host = prop.getProperty("host", "localhost");
+	System.out.println(username);
+	System.out.println(password);
+	System.out.println(host);
+}
+
+2.写properties文件
+@Test
+public void write() throws IOException {
+	Properties prop = new Properties();
+	prop.load(new FileInputStream("data/conf.properties"));
+
+	prop.setProperty("username", "test");
+	prop.setProperty("host", "www.baidu.com");
+
+	prop.store(new FileOutputStream("data/conf.properties"), "sys config");
+}
+
+
+Excel读写
+Java 操作excel的工具有两套，一个是POI，一个是jExcelAPI，其中POI功能弱一些，jExcelAPI对中文支持非常好。API是纯java写的。可以在windows和Linux上运行。不过jExcelAPI对图片支持差，只能识别png格式。
+我们本节用POI讲，这个的功能够我们使用了。如果想学习jExcelAPI可以自己学习。
+1.读Excel文件
+@Test
+public void read() throws IOException {
+	HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream("data/low.xls"));
+
+	int numberOfSheets = workbook.getNumberOfSheets();
+	System.out.println(numberOfSheets);
+
+	HSSFSheet sheet = workbook.getSheet("学生列表");
+	int lastRowNum = sheet.getLastRowNum();
+	System.out.println("lastRowNum=" + lastRowNum);
+
+	int firstRowNum = sheet.getFirstRowNum();
+	System.out.println("firstRowNum=" + firstRowNum);
+
+	for (int i = 1; i <= lastRowNum; i++) {
+		HSSFRow row = sheet.getRow(i);
+		System.out.println(row.getFirstCellNum());
+		System.out.println(row.getLastCellNum());
+
+		HSSFCell idCell = row.getCell(0);
+		//String id = idCell.getStringCellValue();
+		double id = idCell.getNumericCellValue();
+		String username = row.getCell(1).getStringCellValue();
+		System.out.println("id=" + (int) id);
+		System.out.println("username=" + username);
+		System.out.println();
+	}
+}
+
+@Test
+public void readHighVersion() throws IOException {
+	XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream("data/high.xlsx"));
+	int numberOfSheets = workbook.getNumberOfSheets();
+	System.out.println(numberOfSheets);
+}
+
+@Test
+public void getWorkbookTest() throws IOException {
+	//Workbook workbook = ExcelUtil.getWorkbook(new File("data/high.xlsx"));
+	Workbook workbook = ExcelUtil.getWorkbook(new File("data/low.xls"));
+	int numberOfSheets = workbook.getNumberOfSheets();
+	System.out.println(numberOfSheets);
+}
+
+2.写Excel文件
+@Test
+public void createExcel() throws IOException {
+	Workbook workbook = new XSSFWorkbook();
+	Sheet sheet = workbook.createSheet("test");
+	Row row = sheet.createRow(0);
+	Cell cell = row.createCell(0);
+	cell.setCellValue("hello");
+	row.createCell(1).setCellValue(100);
+
+	FileOutputStream outputStream = new FileOutputStream("D://test.xlsx");
+	workbook.write(outputStream);
+
+	outputStream.close();
+	workbook.close();
+}
+
+@Test
+public void update() throws IOException {
+	File file = new File("data/low.xls");
+	Workbook workbook = ExcelUtil.getWorkbook(file);
+
+	Sheet sheet = workbook.getSheetAt(0);
+	int lastRowNum = sheet.getLastRowNum();
+
+	Row row = sheet.createRow(lastRowNum + 1);
+	row.createCell(0).setCellValue(4);
+	row.createCell(1).setCellValue("appium");
+	row.createCell(2).setCellValue(10);
+
+	FileOutputStream outputStream = new FileOutputStream(file);
+	workbook.write(outputStream);
+
+	outputStream.close();
+	workbook.close();
+}
+
+数据库读写
+不同数据容器的对比
+当我们有多人协作开发时，数据库读写就至关重要了。我们不可能把资源文件来回传，哪怕是上传到svn上，也可能出现修改不当的问题。
+@Test
+public void select() throws Exception {
+	Class.forName("com.mysql.jdbc.Driver");
+	String url = "jdbc:mysql://localhost:3306/appium";
+	String username = "root";
+	String pwd = "root";
+	Connection conn = DriverManager.getConnection(url, username, pwd);
+
+	String sql = "SELECT * FROM student";
+	PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+	ResultSet resultSet = preparedStatement.executeQuery();
+	while (resultSet.next()) {
+		int id = resultSet.getInt("id");
+		String name = resultSet.getString("name");
+		int age = resultSet.getInt("age");
+		System.out.println("id=" + id + " name=" + name + " age=" + age);
+	}
+
+	resultSet.close();
+	preparedStatement.close();
+	conn.close();
+}
+
+@Test
+public void insert() throws Exception {
+	Class.forName("com.mysql.jdbc.Driver");
+	String url = "jdbc:mysql://localhost:3306/appium";
+	String username = "root";
+	String pwd = "root";
+	Connection conn = DriverManager.getConnection(url, username, pwd);
+
+	String sql = "INSERT INTO student(name,age) VALUES (?,?)";
+	PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+	preparedStatement.setString(1, "王五");
+	preparedStatement.setInt(2, 50);
+	int updateCount = preparedStatement.executeUpdate();
+	System.out.println("updateCount=" + updateCount);
+
+	preparedStatement.close();
+	conn.close();
+}
+
+@Test
+public void update() throws Exception {
+	Connection conn = DBUtil.getConnection();
+
+	String sql = "UPDATE student SET age=? WHERE id=?";
+	PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+	preparedStatement.setInt(1, 500);
+	preparedStatement.setInt(2, 3);
+	int updateCount = preparedStatement.executeUpdate();
+	System.out.println("updateCount=" + updateCount);
+
+	preparedStatement.close();
+	conn.close();
+}
+
+@Test
+public void delete() throws Exception {
+	Connection conn = DBUtil.getConnection();
+
+	String sql = "DELETE FROM student WHERE id=?";
+	PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+	preparedStatement.setInt(1, 3);
+	int updateCount = preparedStatement.executeUpdate();
+	System.out.println("updateCount=" + updateCount);
+
+	preparedStatement.close();
+	conn.close();
+}
+
+
+===================================================================================================================================
+
+
+
 其他知识点：
 
+licecap
 
-等待技巧
 混合APP测试
-异常处理，testng监听
+
 
 PO技术和方法封装
-数据读写（Excel、xml、properties、数据库）
+
 并发测试
 数据驱动、关键字驱动
 
@@ -704,6 +1004,9 @@ https://anikikun.gitbooks.io/appium-girls-tutorial/content/download_fulu.html
 
 
 
+
+http://t.cn/RHZDcwI
+ix6n
 
 
 
