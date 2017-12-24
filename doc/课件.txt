@@ -1002,7 +1002,8 @@ http://www.cnblogs.com/fnng/p/4540731.html
 https://anikikun.gitbooks.io/appium-girls-tutorial/content/download_fulu.html 
 
 
-
+中文 Appium API 文档
+源地址：https://github.com/appium/appium/tree/master/docs/cn
 
 
 http://t.cn/RHZDcwI
