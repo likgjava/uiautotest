@@ -1,4 +1,4 @@
-package com.likg.uiautotest.po;
+package com.likg.uiautotest.po.f1;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
@@ -24,25 +24,14 @@ public class LoginTest {
 
     private AndroidDriver<AndroidElement> driver;
 
+    private LoginProxy loginProxy;
+
     @Test
     public void loginSuccess() throws InterruptedException {
         System.out.println("helloWorld........");
         Thread.sleep(3000);
 
-        //获取屏幕的宽度和高度
-        int width = driver.manage().window().getSize().getWidth();
-        int height = driver.manage().window().getSize().getHeight();
-        System.out.println("width====" + width);
-        System.out.println("height====" + height);
-
-
-        AndroidElement userName = driver.findElementById("net.csdn.csdnplus:id/editTextUserName");
-        AndroidElement password = driver.findElementById("net.csdn.csdnplus:id/password");
-        AndroidElement loginBut = driver.findElementById("net.csdn.csdnplus:id/csdnsign_in_button");
-
-        userName.sendKeys("likg_java");
-        password.sendKeys("meimima");
-        loginBut.click();
+        loginProxy.login("likg_java", "meimima");
 
         final WebDriverWait wait = new WebDriverWait(driver, 5);
         WebElement until = wait.until(new ExpectedCondition<WebElement>() {
@@ -62,21 +51,8 @@ public class LoginTest {
         System.out.println("helloWorld........");
         Thread.sleep(3000);
 
-        //获取屏幕的宽度和高度
-        int width = driver.manage().window().getSize().getWidth();
-        int height = driver.manage().window().getSize().getHeight();
-        System.out.println("width====" + width);
-        System.out.println("height====" + height);
 
-
-        AndroidElement userName = driver.findElementById("net.csdn.csdnplus:id/editTextUserName");
-        AndroidElement password = driver.findElementById("net.csdn.csdnplus:id/password");
-        AndroidElement loginBut = driver.findElementById("net.csdn.csdnplus:id/csdnsign_in_button");
-
-        //userName.sendKeys("likg_java");
-        password.sendKeys("meimima");
-
-        loginBut.click();
+        loginProxy.login("", "meimima");
 
         String toast = "用户名密码不能为空";
         try {
@@ -84,7 +60,7 @@ public class LoginTest {
             final WebDriverWait wait = new WebDriverWait(driver, 5);
             WebElement until = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//*[contains(@text,'" + toast + "')]")));
             Assert.assertNotNull(until);
-            //System.out.println(until.getTagName());
+            System.out.println("until==="+until);
             System.out.println("找到了toast");
         } catch (Exception e) {
             System.out.println("找不到.....................................");
@@ -99,21 +75,8 @@ public class LoginTest {
         System.out.println("helloWorld........");
         Thread.sleep(3000);
 
-        //获取屏幕的宽度和高度
-        int width = driver.manage().window().getSize().getWidth();
-        int height = driver.manage().window().getSize().getHeight();
-        System.out.println("width====" + width);
-        System.out.println("height====" + height);
 
-
-        AndroidElement userName = driver.findElementById("net.csdn.csdnplus:id/editTextUserName");
-        AndroidElement password = driver.findElementById("net.csdn.csdnplus:id/password");
-        AndroidElement loginBut = driver.findElementById("net.csdn.csdnplus:id/csdnsign_in_button");
-
-        userName.sendKeys("likg_java");
-        password.sendKeys("aaa");
-
-        loginBut.click();
+        loginProxy.login("likg_java", "123");
 
         String toast = "用户名或密码错误";
         try {
@@ -148,6 +111,8 @@ public class LoginTest {
         URL url = new URL("http://127.0.0.1:4723/wd/hub/");
         driver = new AndroidDriver<AndroidElement>(url, capabilities);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+        this.loginProxy = new LoginProxy(driver);
     }
 
     @AfterTest
