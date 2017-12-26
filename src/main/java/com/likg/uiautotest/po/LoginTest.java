@@ -46,6 +46,7 @@ public class LoginTest {
 
         final WebDriverWait wait = new WebDriverWait(driver, 5);
         WebElement until = wait.until(new ExpectedCondition<WebElement>() {
+            @Override
             public WebElement apply(WebDriver webDriver) {
                 return webDriver.findElement(By.id("net.csdn.csdnplus:id/tvtitle"));
             }
