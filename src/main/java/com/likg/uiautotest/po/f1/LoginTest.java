@@ -54,18 +54,42 @@ public class LoginTest {
 
         loginProxy.login("", "meimima");
 
-        String toast = "用户名密码不能为空";
+        final String toast = "用户名密码不能为空";
         try {
             System.out.println(toast);
             final WebDriverWait wait = new WebDriverWait(driver, 5);
-            WebElement until = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//*[contains(@text,'" + toast + "')]")));
+            String xpath = String.format(".//*[contains(@text,'%s')]", toast);
+            System.out.println("xpath==="+xpath);
+            WebElement until = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
             Assert.assertNotNull(until);
+
+            System.out.println("88888888888888888888");
+            System.out.println("until.getText()====="+until.getText());
+
             System.out.println("until==="+until);
             System.out.println("找到了toast");
         } catch (Exception e) {
             System.out.println("找不到.....................................");
             throw new AssertionError("找不到" + toast);
         }
+        /*try {
+            System.out.println(toast);
+            final WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebElement until = wait.until(new ExpectedCondition<WebElement>() {
+                @Override
+                public WebElement apply(WebDriver webDriver) {
+                    String xpath = String.format(".//*[contains(@text,'%s')]", toast);
+                    return driver.findElement(By.xpath(".//*[contains(@text,'" + toast + "')]"));
+                }
+            });
+            Assert.assertNotNull(until);
+            System.out.println("until==="+until);
+            System.out.println("找到了toast11111");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("找不到.111....................................");
+            throw new AssertionError("找不到" + toast);
+        }*/
 
         Thread.sleep(10000);
     }

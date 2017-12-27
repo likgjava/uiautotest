@@ -50,10 +50,12 @@ public class ExcelUtil {
         Workbook workbook = getWorkbook(filePath);
         Sheet sheet = workbook.getSheet(sheetName);
 
+        int totalColumn = sheet.getRow(0).getLastCellNum();
+
         for (int i = startRowNum; i <= sheet.getLastRowNum(); i++) {
             Row row = sheet.getRow(i);
-            Object[] rowData = new Object[row.getLastCellNum()];
-            for (int j = 0; j < row.getLastCellNum(); j++) {
+            Object[] rowData = new Object[totalColumn];
+            for (int j = 0; j < totalColumn; j++) {
                 Cell cell = row.getCell(j);
                 if (cell != null) {
                     rowData[j] = cell.getStringCellValue();

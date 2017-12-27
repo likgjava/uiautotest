@@ -9,7 +9,12 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.remote.MobileCapabilityType;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -136,19 +141,25 @@ public class LoginTest {
     }
 
     private boolean executeCaseStep(CaseStep caseStep) {
-        //查找到元素
-        AndroidElement element = this.findElement(caseStep);
+        System.out.println("executeCaseStep start execute case step="+caseStep.getStepDesc()+" ...");
+        boolean isSuccess = false;
 
-        //获取测试数据
-        TestData testData = this.testDataMap.get(caseStep.getStepCode());
+        try {
+            //获取测试数据
+            TestData testData = this.testDataMap.get(caseStep.getStepCode());
 
-        //执行操作
-        boolean isSuccess = this.executeOperation(element, caseStep.getAction(), testData);
+            //查找到元素
+            WebElement element = this.findElement(caseStep, testData.getData());
 
+            //执行操作
+            isSuccess = this.executeOperation(element, caseStep.getAction(), testData);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return isSuccess;
     }
 
-    private boolean executeOperation(AndroidElement element, String action, TestData testData) {
+    private boolean executeOperation(WebElement element, String action, TestData testData) {
         switch (action) {
             case "sendKey" : {
                 element.sendKeys(testData.getData());
@@ -162,14 +173,17 @@ public class LoginTest {
                 String text = element.getText();
                 return text != null && text.equals(testData.getExpectedResult());
             }
+            case "getToast" : {
+                return element != null;
+            }
             default:{
                 throw new RuntimeException("unknown action="+action);
             }
         }
     }
 
-    private AndroidElement findElement(CaseStep caseStep) {
-        AndroidElement element;
+    private WebElement findElement(CaseStep caseStep, String toast) {
+        WebElement element;
         PageElement pageElement = caseStep.getPageElement();
         switch (pageElement.getLocationType()) {
             case "id" : {
@@ -178,6 +192,12 @@ public class LoginTest {
             }
             case "name" : {
                 element = driver.findElementByName(pageElement.getLocationValue());
+                break;
+            }
+            case "toast" : {
+                WebDriverWait wait = new WebDriverWait(driver, 5);
+                String xpath = String.format(".//*[contains(@text,'%s')]", toast);
+                element = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
                 break;
             }
             default:{
@@ -208,7 +228,7 @@ public class LoginTest {
             pageElement.setElementName(data[0].toString());
             pageElement.setElementDesc(data[1].toString());
             pageElement.setLocationType(data[2].toString());
-            pageElement.setLocationValue(data[3].toString());
+            pageElement.setLocationValue(data[3] == null ? null : data[3].toString());
             this.pageElementList.add(pageElement);
         }
     }
@@ -250,6 +270,11 @@ public class LoginTest {
             testCase.setCaseDesc(data[1].toString());
             testCaseList.add(testCase);
         }
+    }
+
+    @AfterTest
+    public void afterTest() {
+        driver.quit();
     }
 
 
