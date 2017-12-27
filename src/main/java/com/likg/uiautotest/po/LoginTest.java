@@ -54,6 +54,22 @@ public class LoginTest {
         System.out.println(until);
         System.out.println(until.getText());
         Assert.assertEquals(until.getText(), "头条");
+        System.out.println("....................................=======");
+
+        //net.csdn.csdnplus:id/mViewPager
+        //String xpath = "//android.widget.LinearLayout[@resource-id='net.csdn.csdnplus:id/ll_readlist_item'][1]";
+        //AndroidElement mViewPager = driver.findElementById("net.csdn.csdnplus:id/mViewPager");
+        //System.out.println(mViewPager.getTagName());
+        //List<AndroidElement> elements = driver.findElements(By.xpath(xpath));
+        //System.out.println(elements);
+        //System.out.println(elements.size());
+        //AndroidElement element = driver.findElement(By.xpath(xpath));
+        //element.click();
+
+        //android.widget.Button
+        //text:关闭
+        //id:net.csdn.csdnplus:id/ivclose2
+
 
         Thread.sleep(10000);
     }

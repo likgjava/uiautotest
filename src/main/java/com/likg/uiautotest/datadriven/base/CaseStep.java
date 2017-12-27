@@ -13,14 +13,17 @@ public class CaseStep {
     // 执行动作
     private String action;
 
+    // 元素名称
+    private String elementName;
+
     // 输入数据
-    private String locationFileName;
+    private String inputData;
+
+    // 预期结果
+    private String expectedResult;
 
     // 执行结果
     private String executeResult;
-
-    // 元素名称
-    private String elementName;
 
     //该步骤操作的页面元素
     private PageElement pageElement;
@@ -57,12 +60,28 @@ public class CaseStep {
         this.action = action;
     }
 
-    public String getLocationFileName() {
-        return locationFileName;
+    public String getElementName() {
+        return elementName;
     }
 
-    public void setLocationFileName(String locationFileName) {
-        this.locationFileName = locationFileName;
+    public void setElementName(String elementName) {
+        this.elementName = elementName;
+    }
+
+    public String getInputData() {
+        return inputData;
+    }
+
+    public void setInputData(String inputData) {
+        this.inputData = inputData;
+    }
+
+    public String getExpectedResult() {
+        return expectedResult;
+    }
+
+    public void setExpectedResult(String expectedResult) {
+        this.expectedResult = expectedResult;
     }
 
     public String getExecuteResult() {
@@ -71,14 +90,6 @@ public class CaseStep {
 
     public void setExecuteResult(String executeResult) {
         this.executeResult = executeResult;
-    }
-
-    public String getElementName() {
-        return elementName;
-    }
-
-    public void setElementName(String elementName) {
-        this.elementName = elementName;
     }
 
     public PageElement getPageElement() {
