@@ -20,15 +20,8 @@ public class ExcelUtil {
     public static void setCellValue(String filePath, String sheetName, int row, int column, String value) throws IOException {
         Workbook workbook = getWorkbook(filePath);
         Sheet sheet = workbook.getSheet(sheetName);
-        //Row rowObj = sheet.getRow(row);
-        //rowObj.createCell(column).setCellValue(value);
-
-        int lastRowNum = sheet.getLastRowNum();
-
-        Row rowObj = sheet.createRow(lastRowNum + 1);
-        rowObj.createCell(0).setCellValue(4);
-        rowObj.createCell(1).setCellValue("appium");
-        rowObj.createCell(2).setCellValue(10);
+        Row rowObj = sheet.getRow(row);
+        rowObj.createCell(column).setCellValue(value);
 
         FileOutputStream fileOutputStream = new FileOutputStream(new File(filePath));
         workbook.write(fileOutputStream);
@@ -77,9 +70,25 @@ public class ExcelUtil {
     public static Workbook getWorkbook(String filePath) throws IOException {
         Workbook workbook;
         try {
-            workbook = new XSSFWorkbook(filePath);
+            workbook = new XSSFWorkbook(new FileInputStream(filePath));
         } catch (Exception e) {
             workbook = new HSSFWorkbook(new FileInputStream(filePath));
+        }
+        return workbook;
+    }
+
+    /**
+     * 获取Workbook对象
+     * @param file excel文件
+     * @return Workbook
+     * @throws IOException ex
+     */
+    public static Workbook getWorkbook(File file) throws IOException {
+        Workbook workbook;
+        try {
+            workbook = new XSSFWorkbook(new FileInputStream(file));
+        } catch (Exception e) {
+            workbook = new HSSFWorkbook(new FileInputStream(file));
         }
         return workbook;
     }
