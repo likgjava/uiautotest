@@ -45,8 +45,8 @@ public class ExcelUtil {
     }
 
 
-    public static List<Object[]> getAllData(String filePath, String sheetName, int startRowNum) throws IOException {
-        List<Object[]> dataList = new ArrayList<Object[]>();
+    public static List<String[]> getAllData(String filePath, String sheetName, int startRowNum) throws IOException {
+        List<String[]> dataList = new ArrayList<>();
         Workbook workbook = getWorkbook(filePath);
         Sheet sheet = workbook.getSheet(sheetName);
 
@@ -54,7 +54,7 @@ public class ExcelUtil {
 
         for (int i = startRowNum; i <= sheet.getLastRowNum(); i++) {
             Row row = sheet.getRow(i);
-            Object[] rowData = new Object[totalColumn];
+            String[] rowData = new String[totalColumn];
             for (int j = 0; j < totalColumn; j++) {
                 Cell cell = row.getCell(j);
                 if (cell != null) {
