@@ -1,7 +1,5 @@
 package com.likg.uiautotest.datadriven.base;
 
-import com.likg.uiautotest.datadriven.base.CaseStep;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +15,9 @@ public class TestCase {
 
     // 执行步骤
     private List<CaseStep> caseStepList = new ArrayList<CaseStep>();
+
+    // 用例所属页面
+    private String page;
 
     public String getCaseCode() {
         return caseCode;
@@ -48,5 +49,13 @@ public class TestCase {
 
     public void setCaseStepList(List<CaseStep> caseStepList) {
         this.caseStepList = caseStepList;
+    }
+
+    public String getPage() {
+        return page;
+    }
+
+    public void setPage(String page) {
+        this.page = page;
     }
 }

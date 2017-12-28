@@ -3,8 +3,10 @@ package com.likg.uiautotest.datadriven.login;
 import com.likg.uiautotest.datadriven.base.CaseStep;
 import com.likg.uiautotest.datadriven.base.PageElement;
 import com.likg.uiautotest.datadriven.base.TestCase;
+import com.likg.uiautotest.datadriven.constant.Constant;
 import com.likg.uiautotest.datadriven.util.DriverUtil;
 import com.likg.uiautotest.datadriven.util.ExcelUtil;
+import com.likg.uiautotest.datadriven.util.TestCaseUtil;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeTest;
@@ -16,18 +18,14 @@ import java.util.List;
 
 public class RunSuite {
 
-    private String baseDir;
-    private List<TestCase> testCaseList = new ArrayList<TestCase>();
-    private List<PageElement> pageElementList = new ArrayList<PageElement>();
+    private List<TestCase> testCaseList = new ArrayList<>();
+    //private List<PageElement> pageElementList = new ArrayList<PageElement>();
 
     private AndroidDriver<WebElement> driver;
 
 
     @BeforeTest
     public void beforeTest() throws IOException {
-        this.baseDir = System.getProperty("user.dir") + "/data/dataDriven/";
-        System.out.println("baseDir==="+this.baseDir);
-
         //初始化驱动
         this.driver = DriverUtil.getDriver();
     }
@@ -39,42 +37,35 @@ public class RunSuite {
         //加载suite中的用例
         this.loadSuiteCase();
 
-        //加载页面元素
-        this.loadPageElement(page);
-
-        //加载用例
-        this.loadTestCase(page);
-
-        //加载用例步骤
-        this.loadCaseStep(page);
-
         for (TestCase testCase : this.testCaseList) {
-            this.executeTestCase(testCase);
+            TestCaseUtil.executeTestCase(driver, testCase, true);
         }
-
     }
 
     private void loadSuiteCase() throws IOException {
-        List<String[]> dataList = ExcelUtil.getAllData(baseDir + "suite.xlsx", "testCase", 1);
+        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + "suite.xlsx", "testCase", 1);
 
         for (String[] data : dataList) {
             TestCase testCase = new TestCase();
             testCase.setCaseCode(data[0]);
             testCase.setCaseDesc(data[1]);
+            testCase.setPage(data[0].split("_")[0]);
             testCaseList.add(testCase);
 
             //加载用例步骤
-            List<String[]> dataList = ExcelUtil.getAllData(baseDir + page + "TestCase.xlsx", "caseStep", 1);
-
-
-
+            List<CaseStep> caseStepList = this.loadCaseStep(testCase.getPage(), testCase.getCaseCode());
+            testCase.setCaseStepList(caseStepList);
         }
 
     }
 
-    private List<CaseStep> loadCaseStep(String caseCode) throws IOException {
-        String page = caseCode.split("_")[0];
-        List<String[]> dataList = ExcelUtil.getAllData(baseDir + page + "TestCase.xlsx", "caseStep", 1);
+    private List<CaseStep> loadCaseStep(String page, String caseCode) throws IOException {
+        //获取用例步骤
+        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + page + "TestCase.xlsx", "caseStep", 1);
+
+        //获取页面元素
+        List<String[]> elementList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + page + "Element.xlsx", "location", 1);
+
 
         List<CaseStep> caseStepList = new ArrayList<>();
         for (String[] data : dataList) {
@@ -88,6 +79,18 @@ public class RunSuite {
                 caseStep.setInputData(data[5]);
                 caseStep.setExpectedResult(data[6]);
                 caseStepList.add(caseStep);
+
+                for (String[] element : elementList) {
+                    if (caseStep.getElementName().equals(element[0])) {
+                        PageElement pageElement = new PageElement();
+                        pageElement.setElementName(element[0]);
+                        pageElement.setElementDesc(element[1]);
+                        pageElement.setLocationType(element[2]);
+                        pageElement.setLocationValue(element[3]);
+                        caseStep.setPageElement(pageElement);
+                        break;
+                    }
+                }
             }
         }
         return caseStepList;
