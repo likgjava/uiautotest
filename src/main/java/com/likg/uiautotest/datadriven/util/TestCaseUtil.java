@@ -5,12 +5,17 @@ import com.likg.uiautotest.datadriven.base.PageElement;
 import com.likg.uiautotest.datadriven.base.TestCase;
 import com.likg.uiautotest.datadriven.constant.Constant;
 import io.appium.java_client.android.AndroidDriver;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TestCaseUtil {
 
@@ -31,9 +36,12 @@ public class TestCaseUtil {
                 break;
             }
             case "toast": {
-                WebDriverWait wait = new WebDriverWait(driver, 5);
+                System.out.println("toast 1111111111111111111111");
+                WebDriverWait wait = new WebDriverWait(driver, 15);
                 String xpath = String.format(".//*[contains(@text,'%s')]", caseStep.getExpectedResult());
+                System.out.println("toast 2222222222222222222 xpath="+xpath);
                 element = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
+                System.out.println("toast 33333333333333333333333333");
                 break;
             }
             default: {
@@ -75,8 +83,13 @@ public class TestCaseUtil {
             //更新执行结果
             updateExecuteResult(testCase, caseStep, isSuccess, isSuite);
 
+            //保存步骤截图
+            //saveScreenshot(driver, testCase, caseStep);
+
             //执行失败
             if (!isSuccess) {
+                saveScreenshot(driver, testCase, caseStep);
+
                 allStepSuccess = false;
                 break;
             }
@@ -85,6 +98,17 @@ public class TestCaseUtil {
         if (allStepSuccess) {
             updateExecuteResultOfTestCase(testCase.getPage(), testCase.getCaseCode(), "PASS", isSuite);
         }
+    }
+
+    private static void saveScreenshot(AndroidDriver<WebElement> driver, TestCase testCase, CaseStep caseStep) throws IOException {
+
+        File screenshot = driver.getScreenshotAs(OutputType.FILE);
+        String fileName = new SimpleDateFormat("yyyyMMdd-HHmmss-SSS").format(new Date()) + ".jpg";
+        File destFile = new File(Constant.TEST_CASE_DATA_DIR + "screenshot/" + fileName);
+        FileUtils.copyFile(screenshot, destFile);
+
+
+        updateScreenshotOfCaseStep(testCase.getPage(), caseStep.getStepCode(), "screenshot/" + fileName);
     }
 
 
@@ -130,6 +154,12 @@ public class TestCaseUtil {
         int rowNum = ExcelUtil.getRowNum(Constant.TEST_CASE_DATA_DIR + page + "TestCase.xlsx", "caseStep", 0, stepCode);
 
         ExcelUtil.setCellValue(Constant.TEST_CASE_DATA_DIR + page + "TestCase.xlsx", "caseStep", rowNum, 7, result);
+    }
+
+    private static void updateScreenshotOfCaseStep(String page, String stepCode, String screenshotPath) throws IOException {
+        int rowNum = ExcelUtil.getRowNum(Constant.TEST_CASE_DATA_DIR + page + "TestCase.xlsx", "caseStep", 0, stepCode);
+
+        ExcelUtil.setCellValueOfLink(Constant.TEST_CASE_DATA_DIR + page + "TestCase.xlsx", "caseStep", rowNum, 8, screenshotPath);
     }
 
 }

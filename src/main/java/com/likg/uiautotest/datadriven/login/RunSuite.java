@@ -9,6 +9,7 @@ import com.likg.uiautotest.datadriven.util.ExcelUtil;
 import com.likg.uiautotest.datadriven.util.TestCaseUtil;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.WebElement;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -95,6 +96,12 @@ public class RunSuite {
         }
         return caseStepList;
     }
+
+    @AfterTest
+    public void afterTest() {
+        DriverUtil.quitDriver();
+    }
+
 
 
 }
