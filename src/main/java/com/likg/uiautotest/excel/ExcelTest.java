@@ -1,17 +1,26 @@
 package com.likg.uiautotest.excel;
 
+import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Hyperlink;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.testng.annotations.Test;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class ExcelTest {
 
@@ -87,7 +96,23 @@ public class ExcelTest {
         Row row = sheet.createRow(lastRowNum + 1);
         row.createCell(0).setCellValue(4);
         row.createCell(1).setCellValue("appium");
-        row.createCell(2).setCellValue(10);
+        Cell cell = row.createCell(2);
+
+
+
+        CreationHelper createHelper = workbook.getCreationHelper();
+        cell.setCellValue("步骤截图");
+        Hyperlink link = createHelper.createHyperlink(HyperlinkType.FILE);
+        link.setAddress("./appium.png");
+        cell.setHyperlink(link);
+
+        //超级链接的样式,蓝色并接默认有下划线
+        CellStyle linkStyle = workbook.createCellStyle();
+        Font linkFont = workbook.createFont();
+        linkFont.setUnderline(Font.U_SINGLE);
+        linkFont.setColor(IndexedColors.BLUE.getIndex());
+        linkStyle.setFont(linkFont);
+        cell.setCellStyle(linkStyle);
 
         FileOutputStream outputStream = new FileOutputStream(file);
         workbook.write(outputStream);

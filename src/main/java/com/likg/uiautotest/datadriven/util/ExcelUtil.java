@@ -1,7 +1,13 @@
 package com.likg.uiautotest.datadriven.util;
 
+import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Hyperlink;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -22,6 +28,32 @@ public class ExcelUtil {
         Sheet sheet = workbook.getSheet(sheetName);
         Row rowObj = sheet.getRow(row);
         rowObj.createCell(column).setCellValue(value);
+
+        FileOutputStream fileOutputStream = new FileOutputStream(new File(filePath));
+        workbook.write(fileOutputStream);
+        fileOutputStream.close();
+        workbook.close();
+    }
+
+    public static void setCellValueOfLink(String filePath, String sheetName, int row, int column, String screenshotPath) throws IOException {
+        Workbook workbook = getWorkbook(filePath);
+        Sheet sheet = workbook.getSheet(sheetName);
+        Row rowObj = sheet.getRow(row);
+        Cell cell = rowObj.createCell(column);
+
+        CreationHelper createHelper = workbook.getCreationHelper();
+        cell.setCellValue("截图");
+        Hyperlink link = createHelper.createHyperlink(HyperlinkType.FILE);
+        link.setAddress(screenshotPath);
+        cell.setHyperlink(link);
+
+        //超级链接的样式,蓝色并接默认有下划线
+        CellStyle linkStyle = workbook.createCellStyle();
+        Font linkFont = workbook.createFont();
+        linkFont.setUnderline(Font.U_SINGLE);
+        linkFont.setColor(IndexedColors.BLUE.getIndex());
+        linkStyle.setFont(linkFont);
+        cell.setCellStyle(linkStyle);
 
         FileOutputStream fileOutputStream = new FileOutputStream(new File(filePath));
         workbook.write(fileOutputStream);
@@ -94,5 +126,6 @@ public class ExcelUtil {
         }
         return workbook;
     }
+
 
 }
