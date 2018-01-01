@@ -4,10 +4,8 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.remote.MobileCapabilityType;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -15,155 +13,78 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 不使用PO模式，对登录流程进行测试
+ */
 public class LoginTest {
 
     private AndroidDriver<AndroidElement> driver;
 
+    /**
+     * 验证登录成功
+     * @throws Exception ex
+     */
     @Test
-    public void loginSuccess() throws InterruptedException {
-        System.out.println("helloWorld........");
-        Thread.sleep(3000);
+    public void loginSuccess() throws Exception {
+        driver.findElementById("net.csdn.csdnplus:id/editTextUserName").sendKeys("likg_java");
+        driver.findElementById("net.csdn.csdnplus:id/password").sendKeys("meimima");
+        driver.findElementById("net.csdn.csdnplus:id/csdnsign_in_button").click();
 
-        //获取屏幕的宽度和高度
-        int width = driver.manage().window().getSize().getWidth();
-        int height = driver.manage().window().getSize().getHeight();
-        System.out.println("width====" + width);
-        System.out.println("height====" + height);
-
-
-        AndroidElement userName = driver.findElementById("net.csdn.csdnplus:id/editTextUserName");
-        AndroidElement password = driver.findElementById("net.csdn.csdnplus:id/password");
-        AndroidElement loginBut = driver.findElementById("net.csdn.csdnplus:id/csdnsign_in_button");
-
-        userName.sendKeys("likg_java");
-        password.sendKeys("meimima");
-        loginBut.click();
-
-        final WebDriverWait wait = new WebDriverWait(driver, 5);
-        WebElement until = wait.until(new ExpectedCondition<WebElement>() {
-            @Override
-            public WebElement apply(WebDriver webDriver) {
-                return webDriver.findElement(By.id("net.csdn.csdnplus:id/tvtitle"));
-            }
-        });
-        System.out.println(until);
-        System.out.println(until.getText());
-        Assert.assertEquals(until.getText(), "头条");
-        System.out.println("....................................=======");
-
-        //net.csdn.csdnplus:id/mViewPager
-        //String xpath = "//android.widget.LinearLayout[@resource-id='net.csdn.csdnplus:id/ll_readlist_item'][1]";
-        //AndroidElement mViewPager = driver.findElementById("net.csdn.csdnplus:id/mViewPager");
-        //System.out.println(mViewPager.getTagName());
-        //List<AndroidElement> elements = driver.findElements(By.xpath(xpath));
-        //System.out.println(elements);
-        //System.out.println(elements.size());
-        //AndroidElement element = driver.findElement(By.xpath(xpath));
-        //element.click();
-
-        //android.widget.Button
-        //text:关闭
-        //id:net.csdn.csdnplus:id/ivclose2
-
+        AndroidElement title = driver.findElement(By.id("net.csdn.csdnplus:id/tvtitle"));
+        Assert.assertEquals(title.getText(), "头条");
 
         Thread.sleep(10000);
     }
 
+    /**
+     * 验证用户名为空
+     * @throws Exception ex
+     */
     @Test
-    public void loginUsernameIsNull() throws InterruptedException {
-        System.out.println("helloWorld........");
-        Thread.sleep(3000);
-
-        //获取屏幕的宽度和高度
-        int width = driver.manage().window().getSize().getWidth();
-        int height = driver.manage().window().getSize().getHeight();
-        System.out.println("width====" + width);
-        System.out.println("height====" + height);
-
-
-        AndroidElement userName = driver.findElementById("net.csdn.csdnplus:id/editTextUserName");
-        AndroidElement password = driver.findElementById("net.csdn.csdnplus:id/password");
-        AndroidElement loginBut = driver.findElementById("net.csdn.csdnplus:id/csdnsign_in_button");
-
-        //userName.sendKeys("likg_java");
-        password.sendKeys("meimima");
-
-        loginBut.click();
+    public void loginUsernameIsNull() throws Exception {
+        driver.findElementById("net.csdn.csdnplus:id/editTextUserName").sendKeys("");
+        driver.findElementById("net.csdn.csdnplus:id/password").sendKeys("123");
+        driver.findElementById("net.csdn.csdnplus:id/csdnsign_in_button").click();
 
         String toast = "用户名密码不能为空";
-        try {
-            System.out.println(toast);
-            final WebDriverWait wait = new WebDriverWait(driver, 5);
-            WebElement until = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//*[contains(@text,'" + toast + "')]")));
-            Assert.assertNotNull(until);
-            //System.out.println(until.getTagName());
-            System.out.println("找到了toast");
-        } catch (Exception e) {
-            System.out.println("找不到.....................................");
-            throw new AssertionError("找不到" + toast);
-        }
+        final WebDriverWait wait = new WebDriverWait(driver, 5);
+        WebElement until = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//*[contains(@text,'" + toast + "')]")));
+        Assert.assertNotNull(until);
 
-        Thread.sleep(10000);
+        Thread.sleep(3000);
     }
 
+    /**
+     * 验证密码错误
+     * @throws Exception ex
+     */
     @Test
-    public void loginPasswordIsError() throws InterruptedException {
-        System.out.println("helloWorld........");
-        Thread.sleep(3000);
-
-        //获取屏幕的宽度和高度
-        int width = driver.manage().window().getSize().getWidth();
-        int height = driver.manage().window().getSize().getHeight();
-        System.out.println("width====" + width);
-        System.out.println("height====" + height);
-
-
-        AndroidElement userName = driver.findElementById("net.csdn.csdnplus:id/editTextUserName");
-        AndroidElement password = driver.findElementById("net.csdn.csdnplus:id/password");
-        AndroidElement loginBut = driver.findElementById("net.csdn.csdnplus:id/csdnsign_in_button");
-
-        userName.sendKeys("likg_java");
-        password.sendKeys("aaa");
-
-        loginBut.click();
+    public void loginPasswordIsError() throws Exception {
+        driver.findElementById("net.csdn.csdnplus:id/editTextUserName").sendKeys("likg_java");
+        driver.findElementById("net.csdn.csdnplus:id/password").sendKeys("123");
+        driver.findElementById("net.csdn.csdnplus:id/csdnsign_in_button").click();
 
         String toast = "用户名或密码错误";
-        try {
-            System.out.println(toast);
-            final WebDriverWait wait = new WebDriverWait(driver, 5);
-            WebElement toastEle = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//*[contains(@text,'" + toast + "')]")));
-            Assert.assertNotNull(toastEle);
-            //System.out.println(toastEle.getTagName());
-            System.out.println("找到了toast");
-        } catch (Exception e) {
-            System.out.println("找不到.....................................");
-            throw new AssertionError("找不到" + toast);
-        }
+        final WebDriverWait wait = new WebDriverWait(driver, 5);
+        WebElement toastEle = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//*[contains(@text,'" + toast + "')]")));
+        Assert.assertNotNull(toastEle);
 
-        Thread.sleep(10000);
+        Thread.sleep(3000);
     }
 
     @BeforeTest
     public void beforeTest() throws MalformedURLException {
-        System.out.println("beforeTest...888.");
-
-        File apk = new File("D://apk/CSDN.apk");
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("deviceName", "mi");
-        //capabilities.setCapability("app", apk.getAbsolutePath());
-
+        capabilities.setCapability("deviceName", "emulator");
         capabilities.setCapability("appPackage", "net.csdn.csdnplus");
         capabilities.setCapability("appActivity", "net.csdn.csdnplus.activity.SplashActivity");
-
         capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "Uiautomator2");
 
-        URL url = new URL("http://127.0.0.1:4723/wd/hub/");
-        driver = new AndroidDriver<AndroidElement>(url, capabilities);
+        driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub/"), capabilities);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
@@ -171,6 +92,4 @@ public class LoginTest {
     public void afterTest() {
         driver.quit();
     }
-
-
 }

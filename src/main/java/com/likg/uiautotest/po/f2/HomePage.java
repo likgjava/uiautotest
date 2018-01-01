@@ -3,6 +3,9 @@ package com.likg.uiautotest.po.f2;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
+/**
+ * 主页
+ */
 public class HomePage {
 
     private AndroidDriver<AndroidElement> driver;
@@ -17,11 +20,12 @@ public class HomePage {
         if (this.titleElement == null || !"头条".equals(this.titleElement.getText())) {
             throw new RuntimeException("This is not home page!");
         }
-
     }
 
+    /**
+     * 刷新主页
+     */
     public void refresh() {
         //...
     }
-
 }

@@ -15,8 +15,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+/**
+ * 用例工具类
+ */
 public class TestCaseUtil {
 
     public static WebElement findElement(AndroidDriver<WebElement> driver, CaseStep caseStep) {
@@ -39,7 +44,7 @@ public class TestCaseUtil {
                 System.out.println("toast 1111111111111111111111");
                 WebDriverWait wait = new WebDriverWait(driver, 15);
                 String xpath = String.format(".//*[contains(@text,'%s')]", caseStep.getExpectedResult());
-                System.out.println("toast 2222222222222222222 xpath="+xpath);
+                System.out.println("toast 2222222222222222222 xpath=" + xpath);
                 element = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
                 System.out.println("toast 33333333333333333333333333");
                 break;
@@ -141,7 +146,7 @@ public class TestCaseUtil {
     private static void updateExecuteResultOfTestCase(String page, String caseCode, String result, boolean isSuite) throws IOException {
         String filePath;
         if (isSuite) {
-            filePath = Constant.TEST_CASE_DATA_DIR + page + "TestCase.xlsx";
+            filePath = Constant.TEST_CASE_DATA_DIR + page + ".xlsx";
         } else {
             filePath = Constant.TEST_CASE_DATA_DIR + "suite.xlsx";
         }
@@ -151,15 +156,29 @@ public class TestCaseUtil {
     }
 
     private static void updateExecuteResultOfCaseStep(String page, String stepCode, String result) throws IOException {
-        int rowNum = ExcelUtil.getRowNum(Constant.TEST_CASE_DATA_DIR + page + "TestCase.xlsx", "caseStep", 0, stepCode);
+        int rowNum = ExcelUtil.getRowNum(Constant.TEST_CASE_DATA_DIR + page + ".xlsx", "caseStep", 0, stepCode);
 
-        ExcelUtil.setCellValue(Constant.TEST_CASE_DATA_DIR + page + "TestCase.xlsx", "caseStep", rowNum, 7, result);
+        ExcelUtil.setCellValue(Constant.TEST_CASE_DATA_DIR + page + ".xlsx", "caseStep", rowNum, 7, result);
     }
 
     private static void updateScreenshotOfCaseStep(String page, String stepCode, String screenshotPath) throws IOException {
-        int rowNum = ExcelUtil.getRowNum(Constant.TEST_CASE_DATA_DIR + page + "TestCase.xlsx", "caseStep", 0, stepCode);
+        int rowNum = ExcelUtil.getRowNum(Constant.TEST_CASE_DATA_DIR + page + ".xlsx", "caseStep", 0, stepCode);
 
-        ExcelUtil.setCellValueOfLink(Constant.TEST_CASE_DATA_DIR + page + "TestCase.xlsx", "caseStep", rowNum, 8, screenshotPath);
+        ExcelUtil.setCellValueOfLink(Constant.TEST_CASE_DATA_DIR + page + ".xlsx", "caseStep", rowNum, 8, screenshotPath);
+    }
+
+    public static List<PageElement> loadPageElement(String page) throws IOException {
+        List<PageElement> pageElementList = new ArrayList<>();
+        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + page + ".xlsx", "location", 1);
+        for (String[] data : dataList) {
+            PageElement pageElement = new PageElement();
+            pageElement.setElementName(data[0]);
+            pageElement.setElementDesc(data[1]);
+            pageElement.setLocationType(data[2]);
+            pageElement.setLocationValue(data[3]);
+            pageElementList.add(pageElement);
+        }
+        return pageElementList;
     }
 
 }

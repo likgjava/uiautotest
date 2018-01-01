@@ -1,5 +1,8 @@
 package com.likg.uiautotest.datadriven.base;
 
+/**
+ * 页面元素
+ */
 public class PageElement {
 
     // 元素名称
@@ -13,7 +16,6 @@ public class PageElement {
 
     // 定位值
     private String locationValue;
-
 
     public String getElementName() {
         return elementName;

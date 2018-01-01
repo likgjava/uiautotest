@@ -20,8 +20,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 操作Excel的工具类
+ */
 public class ExcelUtil {
-
 
     public static void setCellValue(String filePath, String sheetName, int row, int column, String value) throws IOException {
         Workbook workbook = getWorkbook(filePath);
@@ -101,6 +103,12 @@ public class ExcelUtil {
         return dataList;
     }
 
+    /**
+     * 获取Workbook对象
+     * @param filePath excel文件路径
+     * @return Workbook
+     * @throws IOException ex
+     */
     public static Workbook getWorkbook(String filePath) throws IOException {
         Workbook workbook;
         try {
@@ -110,22 +118,5 @@ public class ExcelUtil {
         }
         return workbook;
     }
-
-    /**
-     * 获取Workbook对象
-     * @param file excel文件
-     * @return Workbook
-     * @throws IOException ex
-     */
-    public static Workbook getWorkbook(File file) throws IOException {
-        Workbook workbook;
-        try {
-            workbook = new XSSFWorkbook(new FileInputStream(file));
-        } catch (Exception e) {
-            workbook = new HSSFWorkbook(new FileInputStream(file));
-        }
-        return workbook;
-    }
-
 
 }

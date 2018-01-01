@@ -3,6 +3,9 @@ package com.likg.uiautotest.datadriven.base;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 用例
+ */
 public class TestCase {
     // 用例编号
     private String caseCode;
@@ -14,7 +17,7 @@ public class TestCase {
     private String executeResult;
 
     // 执行步骤
-    private List<CaseStep> caseStepList = new ArrayList<CaseStep>();
+    private List<CaseStep> caseStepList = new ArrayList<>();
 
     // 用例所属页面
     private String page;

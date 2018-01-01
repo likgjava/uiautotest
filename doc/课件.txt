@@ -352,7 +352,39 @@ File screenshot = driver.getScreenshotAs(OutputType.FILE);
 File destFile = new File("D:/screenshot/a.png");
 FileUtils.copyFile(screenshot, destFile);
 
+--------------------------------------------------------------
+等待技巧
+我们的代码执行很快，但有时由于网速、手机硬件等原因加载需要时间。所以我们需要等待页面加载。
+在appium中有三种等待方式。每个等待方式都有不同的用处，在前面的代码中为了让读者更清晰的看到代码执行的效果，用的最多的一个等待方式是强制等待，即要求等多久就等多久。
+强制等待缺点比较明显，就是我们无法确定应该设置多长时间最优。比如说我设置了10秒。结果5秒加载完成。还会再等5秒，无疑浪费了5秒的时间。同样10秒没加载完成他依然继续执行后续代码。
 
+强制等待
+强制等待使用的是JAVA自己的等待，Thread.sleep()方法。
+
+
+隐示等待
+隐示等待是等待页面加载时间，我们设置一个超时时间，如果在设置的时间内页面加载完成就立即继续执行。如果一直不能完全加载，规定时间到后会报出异常。
+
+
+此处设置是全局设置。
+pageLoadTimeout是等待页面加载。
+implicitlyWait是识别对象超时时间，如果在规定的时间内无法定位元素就报错
+setScriptTimeout设置异步脚本超时时间，也就是有async属性的JS脚本。
+driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
+driver.manage().timeouts().wait(10);
+
+
+显示等待
+显示等待就是等待我们下一个需要定位的元素，元素出现就停止等待，开始执行代码。
+//设置等待10s，每2s检查一次元素是否加载成功
+WebDriverWait wait = new WebDriverWait(driver, 10, 2000);
+wait.until(new ExpectedCondition<WebElement>() {
+	public WebElement apply(WebDriver webDriver) {
+		return webDriver.findElement(By.name("赞"));
+	}
+}).click();
 
 ===================================================================================================================================
 
@@ -672,38 +704,7 @@ IEDA中生成测试报告配置
 
 ===================================================================================================================================
 
-等待技巧
-我们的代码执行很快，但有时由于网速、手机硬件等原因加载需要时间。所以我们需要等待页面加载。
-在appium中有三种等待方式。每个等待方式都有不同的用处，在前面的代码中为了让读者更清晰的看到代码执行的效果，用的最多的一个等待方式是强制等待，即要求等多久就等多久。
-强制等待缺点比较明显，就是我们无法确定应该设置多长时间最优。比如说我设置了10秒。结果5秒加载完成。还会再等5秒，无疑浪费了5秒的时间。同样10秒没加载完成他依然继续执行后续代码。
 
-强制等待
-强制等待使用的是JAVA自己的等待，Thread.sleep()方法。
-
-
-隐示等待
-隐示等待是等待页面加载时间，我们设置一个超时时间，如果在设置的时间内页面加载完成就立即继续执行。如果一直不能完全加载，规定时间到后会报出异常。
-
-
-此处设置是全局设置。
-pageLoadTimeout是等待页面加载。
-implicitlyWait是识别对象超时时间，如果在规定的时间内无法定位元素就报错
-setScriptTimeout设置异步脚本超时时间，也就是有async属性的JS脚本。
-driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
-driver.manage().timeouts().wait(10);
-
-
-显示等待
-显示等待就是等待我们下一个需要定位的元素，元素出现就停止等待，开始执行代码。
-//设置等待10s，每2s检查一次元素是否加载成功
-WebDriverWait wait = new WebDriverWait(driver, 10, 2000);
-wait.until(new ExpectedCondition<WebElement>() {
-	public WebElement apply(WebDriver webDriver) {
-		return webDriver.findElement(By.name("赞"));
-	}
-}).click();
 
 
 ===================================================================================================================================
@@ -969,7 +970,7 @@ PO技术
 方法封装是将一些有共性的或多次被使用的方法写到一个类中，这样可以避免代码冗余，且容易维护，只需要改一个方法所有需要调用此方法的方法结果都会被修改。
 封装方法的目的是用最少的代码实现最多的功能。
 
-PO技术
+PO技术介绍
 大家都知道在做UI自动化时定位特别依赖页面，一旦页面发生变更就不得不跟着去修改页面定位。
 在webdriver中，假设你想对一个元素定位操作，那么你可能会编写下面的代码：
 driver.findElement(By.id("ad")).click();

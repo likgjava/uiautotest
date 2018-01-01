@@ -2,9 +2,6 @@ package com.likg.uiautotest;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
-import io.appium.java_client.android.AndroidKeyCode;
-import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterTest;
@@ -24,57 +21,32 @@ public class Rotate {
     @Test
     public void rotate() throws InterruptedException {
         System.out.println("rotate...");
-        Thread.sleep(10000);
+        Thread.sleep(5000);
 
+        //获取屏幕朝向
+        ScreenOrientation orientation = driver.getOrientation();
+        System.out.println("orientation=" + orientation);
+
+        //切换成横屏
         driver.rotate(ScreenOrientation.LANDSCAPE);
-        Thread.sleep(10000);
+        Thread.sleep(5000);
 
+        //切换成竖屏
         driver.rotate(ScreenOrientation.PORTRAIT);
         Thread.sleep(10000);
     }
 
     @BeforeTest
-    public void  beforeTest() throws MalformedURLException {
-        System.out.println("beforeTest....");
+    public void beforeTest() throws MalformedURLException {
         DesiredCapabilities capabilities = new DesiredCapabilities();
-
-//        File apk = new File("D://apk/zhihu.apk");
-//        System.out.println(apk.exists());
-//
-//        capabilities.setCapability("deviceName", "xiaomi");
-//        capabilities.setCapability("app", apk.getAbsolutePath());
-//        URL url = new URL("http://127.0.0.1:4723/wd/hub/");
-//        System.out.println("11111111111");
-//        driver = new AndroidDriver<AndroidElement>(url, capabilities);
-//        System.out.println("2222222");
-//        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-//        System.out.println("333333333333333333333333");
-
-
-        // set up appium
-        //File app = new File("D://apk/ContactManager.apk");
-        //capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
-        capabilities.setCapability("platformName", "Android");
-        capabilities.setCapability("deviceName","Android Emulator");
-        capabilities.setCapability("platformVersion", "6.0");
-        //capabilities.setCapability("app", app.getAbsolutePath());
+        capabilities.setCapability("deviceName", "emulator");
         capabilities.setCapability("appPackage", "com.android.dialer");
         capabilities.setCapability("appActivity", ".DialtactsActivity");
-
-        capabilities.setCapability("unicodeKeyboard", "True");
-        //capabilities.setCapability("resetKeyboard", "True");
-
         driver = new AndroidDriver<AndroidElement>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-        System.out.println("333333333333333333333333");
-
     }
 
     @AfterTest
-    public void afterTest(){
+    public void afterTest() {
         driver.quit();
     }
-
-
-
-
 }

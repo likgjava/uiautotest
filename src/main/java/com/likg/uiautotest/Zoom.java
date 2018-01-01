@@ -13,9 +13,9 @@ import org.testng.annotations.Test;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class Input {
+public class Zoom {
 
-    private static Logger log  =  Logger.getLogger(Input. class );
+    private static Logger log  =  Logger.getLogger(Zoom. class );
 
     //protected final Log log = LogFactory.getLog(getClass());
 
@@ -23,7 +23,7 @@ public class Input {
 
 
     @Test
-    public void sendKeys() throws InterruptedException {
+    public void zoom() throws InterruptedException {
         log.error("1111111111111111111111111111111111111111111");
         System.out.println("helloWorld........");
 
@@ -33,37 +33,19 @@ public class Input {
         System.out.println("y===="+y);
 
         Thread.sleep(10000);
-
+        System.out.println("111111");
         AndroidElement element = driver.findElement(By.id("com.android.dialer:id/search_box_start_search"));
-        System.out.println(element.getTagName());
-        System.out.println(element.getText());
-        Thread.sleep(1000);
 
 
+        //在屏幕的元素上放大
+        driver.zoom(element);
+        //在屏幕的指定坐标上放大
+        driver.zoom(300, 300);
 
-
-
-        System.out.println("sendKeys click...");
-        element.click();
-
-        AndroidElement searchView = driver.findElement(By.id("com.android.dialer:id/search_view"));
-
-
-        driver.pressKeyCode(AndroidKeyCode.KEYCODE_A); // 字母“a”
-        driver.pressKeyCode(30); // 字母“a”
-        driver.pressKeyCode(31); // 字母“a”
-        Thread.sleep(3000);
-
-        searchView.clear();
-        Thread.sleep(3000);
-
-        System.out.println("sendKeys start...");
-        searchView.sendKeys("1234中国");
-        System.out.println("sendKeys end!!!!!");
-        Thread.sleep(5000);
-
-        driver.pressKeyCode(AndroidKeyCode.DEL);
-
+        //在屏幕的元素上缩小
+        driver.pinch(element);
+        //在屏幕的指定坐标上缩小
+        driver.pinch(300, 300);
 
         Thread.sleep(10000);
 
@@ -109,4 +91,8 @@ public class Input {
     public void afterTest(){
         driver.quit();
     }
+
+
+
+
 }

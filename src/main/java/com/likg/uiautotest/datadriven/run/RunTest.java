@@ -1,4 +1,4 @@
-package com.likg.uiautotest.datadriven.login;
+package com.likg.uiautotest.datadriven.run;
 
 import com.likg.uiautotest.datadriven.base.CaseStep;
 import com.likg.uiautotest.datadriven.base.PageElement;
@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 运行单个页面的相关用例
+ */
 public class RunTest {
 
     private String page = "loginPage";
@@ -37,7 +40,7 @@ public class RunTest {
         System.out.println("start...");
 
         //加载页面元素
-        this.loadPageElement(page);
+        this.pageElementList = TestCaseUtil.loadPageElement(page);
 
         //加载用例
         this.loadTestCase(page);
@@ -50,21 +53,8 @@ public class RunTest {
         }
     }
 
-    private void loadPageElement(String page) throws IOException {
-        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + page + "Element.xlsx", "location", 1);
-
-        for (String[] data : dataList) {
-            PageElement pageElement = new PageElement();
-            pageElement.setElementName(data[0]);
-            pageElement.setElementDesc(data[1]);
-            pageElement.setLocationType(data[2]);
-            pageElement.setLocationValue(data[3]);
-            this.pageElementList.add(pageElement);
-        }
-    }
-
     private void loadCaseStep(String page) throws IOException {
-        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + page + "TestCase.xlsx", "caseStep", 1);
+        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + page + ".xlsx", "caseStep", 1);
 
         for (String[] data : dataList) {
             CaseStep caseStep = new CaseStep();
@@ -93,7 +83,7 @@ public class RunTest {
     }
 
     private void loadTestCase(String page) throws IOException {
-        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + page + "TestCase.xlsx", "testCase", 1);
+        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + page + ".xlsx", "testCase", 1);
 
         for (String[] data : dataList) {
             TestCase testCase = new TestCase();
@@ -108,6 +98,4 @@ public class RunTest {
     public void afterTest() {
         DriverUtil.quitDriver();
     }
-
-
 }

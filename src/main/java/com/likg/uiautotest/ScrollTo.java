@@ -5,6 +5,7 @@ import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.android.AndroidKeyCode;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -13,18 +14,11 @@ import org.testng.annotations.Test;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class Input {
+public class ScrollTo {
 
-    private static Logger log  =  Logger.getLogger(Input. class );
-
-    //protected final Log log = LogFactory.getLog(getClass());
-
-    AndroidDriver<AndroidElement> driver;
-
-
+    private AndroidDriver<WebElement> driver;
     @Test
     public void sendKeys() throws InterruptedException {
-        log.error("1111111111111111111111111111111111111111111");
         System.out.println("helloWorld........");
 
         int x = driver.manage().window().getSize().getWidth();
@@ -32,39 +26,49 @@ public class Input {
         System.out.println("x===="+x);
         System.out.println("y===="+y);
 
-        Thread.sleep(10000);
 
-        AndroidElement element = driver.findElement(By.id("com.android.dialer:id/search_box_start_search"));
-        System.out.println(element.getTagName());
-        System.out.println(element.getText());
-        Thread.sleep(1000);
+        //左滑
+        driver.swipe(x * 9 / 10, y / 2, x / 10, y / 2, 500);
+        Thread.sleep(2000);
 
-
-
-
-
-        System.out.println("sendKeys click...");
-        element.click();
-
-        AndroidElement searchView = driver.findElement(By.id("com.android.dialer:id/search_view"));
-
-
-        driver.pressKeyCode(AndroidKeyCode.KEYCODE_A); // 字母“a”
-        driver.pressKeyCode(30); // 字母“a”
-        driver.pressKeyCode(31); // 字母“a”
-        Thread.sleep(3000);
-
-        searchView.clear();
-        Thread.sleep(3000);
-
-        System.out.println("sendKeys start...");
-        searchView.sendKeys("1234中国");
-        System.out.println("sendKeys end!!!!!");
+        //左滑
+        driver.swipe(x * 9 / 10, y / 2, x / 10, y / 2, 500);
         Thread.sleep(5000);
 
-        driver.pressKeyCode(AndroidKeyCode.DEL);
+        try {
+            //AndroidElement zoo = driver.findElementByName("likg");
+            //AndroidElement zoo = driver.findElementByXPath("//android.widget.TextView[@text='Zoo']");
+            //AndroidElement zoo = driver.findElementByAccessibilityId("Zoo");
+            //System.out.println("zoo==1.0=="+zoo);
+            //System.out.println("zoo==1=="+zoo.getTagName());
+            //System.out.println("zoo==1=="+zoo.getId());
+        }catch (Exception e){
+            System.out.println("没找到。。。。。");
+        }
 
 
+
+        System.out.println("start up swipe.....");
+
+
+        WebElement zoo = driver.scrollTo("Zo"); //模糊查找
+        WebElement zoo2 = driver.scrollToExact("Zoo"); //精确查找
+        System.out.println("scrollTo zoo===="+zoo);
+
+
+        //上滑
+        //driver.swipe(x / 2, y * 9 / 10, x / 2, y / 10, 500);
+
+        try {
+            //AndroidElement zoo = driver.findElementByName("likg");
+            //AndroidElement zoo = driver.findElementByXPath("//android.widget.TextView[@text='Zoo']");
+            //AndroidElement zoo = driver.findElementByAccessibilityId("Zoo");
+            //System.out.println("zoo==222.0=="+zoo);
+            //System.out.println("zoo==1=="+zoo.getTagName());
+            //System.out.println("zoo==1=="+zoo.getId());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         Thread.sleep(10000);
 
     }
@@ -100,7 +104,7 @@ public class Input {
         capabilities.setCapability("unicodeKeyboard", "true");
         capabilities.setCapability("resetKeyboard", "true");
 
-        driver = new AndroidDriver<AndroidElement>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+        driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
         System.out.println("333333333333333333333333");
 
     }
@@ -109,4 +113,8 @@ public class Input {
     public void afterTest(){
         driver.quit();
     }
+
+
+
+
 }

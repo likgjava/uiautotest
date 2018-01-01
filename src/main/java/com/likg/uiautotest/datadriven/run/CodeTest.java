@@ -1,8 +1,7 @@
-package com.likg.uiautotest.datadriven.login;
+package com.likg.uiautotest.datadriven.run;
 
 import com.likg.uiautotest.datadriven.util.DriverUtil;
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.android.AndroidElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -17,7 +16,6 @@ import java.io.IOException;
 public class CodeTest {
 
     private AndroidDriver<WebElement> driver;
-
 
     @BeforeTest
     public void beforeTest() throws IOException {

@@ -3,19 +3,20 @@ package com.likg.uiautotest.po.f1;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 
+/**
+ * 登录页面-业务操作层
+ */
 public class LoginProxy {
 
-    private LoginExec loginExec;
-
+    private LoginHandle loginHandle;
 
     public LoginProxy(AndroidDriver<AndroidElement> driver) {
-        this.loginExec = new LoginExec(driver);
+        this.loginHandle = new LoginHandle(driver);
     }
 
     public void login(String userName, String password) {
-        loginExec.setUserName(userName);
-        loginExec.setPassword(password);
-        loginExec.clickLoginBut();
+        loginHandle.setUserName(userName);
+        loginHandle.setPassword(password);
+        loginHandle.clickLoginBut();
     }
-
 }

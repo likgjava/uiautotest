@@ -1,5 +1,8 @@
 package com.likg.uiautotest.datadriven.base;
 
+/**
+ * 用例步骤
+ */
 public class CaseStep {
     // 步骤编号
     private String stepCode;

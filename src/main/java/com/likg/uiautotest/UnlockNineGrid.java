@@ -15,7 +15,7 @@ import java.net.URL;
 
 public class UnlockNineGrid {
 
-    private static Logger log  =  Logger.getLogger(UnlockNineGrid. class );
+    private static Logger log = Logger.getLogger(UnlockNineGrid.class);
 
     //protected final Log log = LogFactory.getLog(getClass());
 
@@ -23,16 +23,6 @@ public class UnlockNineGrid {
 
     @Test
     public void unlock() throws InterruptedException {
-        log.error("1111111111111111111111111111111111111111111");
-        System.out.println("helloWorld........");
-
-        int x = driver.manage().window().getSize().getWidth();
-        int y = driver.manage().window().getSize().getHeight();
-        System.out.println("x===="+x);
-        System.out.println("y===="+y);
-
-        Thread.sleep(10000);
-
         //定位9个圆点
         AndroidElement one = driver.findElement(By.name("one"));
         AndroidElement two = driver.findElement(By.name("two"));
@@ -44,9 +34,9 @@ public class UnlockNineGrid {
         AndroidElement eight = driver.findElement(By.name("eight"));
         AndroidElement nine = driver.findElement(By.name("nine"));
 
-        //1->2->5->8->9
+        //1->2->5->8
         TouchAction touchAction = new TouchAction(driver);
-        touchAction.press(one).moveTo(two).moveTo(five).moveTo(eight).moveTo(nine).release().perform();
+        touchAction.press(one).moveTo(two).moveTo(five).moveTo(eight).release().perform();
 
         Thread.sleep(10000);
     }
@@ -58,8 +48,8 @@ public class UnlockNineGrid {
 
         int x = driver.manage().window().getSize().getWidth();
         int y = driver.manage().window().getSize().getHeight();
-        System.out.println("x===="+x);
-        System.out.println("y===="+y);
+        System.out.println("x====" + x);
+        System.out.println("y====" + y);
 
         Thread.sleep(10000);
 
@@ -71,7 +61,7 @@ public class UnlockNineGrid {
     }
 
     @BeforeTest
-    public void  beforeTest() throws MalformedURLException {
+    public void beforeTest() throws MalformedURLException {
         System.out.println("beforeTest....");
         DesiredCapabilities capabilities = new DesiredCapabilities();
 
@@ -92,7 +82,7 @@ public class UnlockNineGrid {
         //File app = new File("D://apk/ContactManager.apk");
         //capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
         capabilities.setCapability("platformName", "Android");
-        capabilities.setCapability("deviceName","Android Emulator");
+        capabilities.setCapability("deviceName", "Android Emulator");
         capabilities.setCapability("platformVersion", "6.0");
         //capabilities.setCapability("app", app.getAbsolutePath());
         capabilities.setCapability("appPackage", "com.android.dialer");
@@ -103,11 +93,9 @@ public class UnlockNineGrid {
     }
 
     @AfterTest
-    public void afterTest(){
+    public void afterTest() {
         driver.quit();
     }
-
-
 
 
 }

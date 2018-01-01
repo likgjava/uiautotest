@@ -25,24 +25,22 @@ public class Swipe {
         Dimension dimension = driver.manage().window().getSize();
         int x = dimension.getWidth();
         int y = dimension.getHeight();
-        System.out.println("x===="+x);
-        System.out.println("y===="+y);
+        System.out.println("x====" + x);
+        System.out.println("y====" + y);
 
         Thread.sleep(10000);
 
-        //从右往左滑
-        driver.swipe(x * 9/10, y/2, x/10, y/2, 500);
+        //左滑
+        driver.swipe(x * 9 / 10, y / 2, x / 10, y / 2, 500);
         Thread.sleep(10000);
 
-        //从下往上滑动
-        driver.swipe(x/2, y*9/10, x/2, y/10, 500);
+        //上滑
+        driver.swipe(x / 2, y * 9 / 10, x / 2, y / 10, 500);
         Thread.sleep(10000);
     }
 
     @Test
     public void elementSwipe() throws InterruptedException {
-        System.out.println("helloWorld........");
-
         //获取元素信息
         AndroidElement element = driver.findElement(By.xpath("//android.widget.FrameLayout[@index=2]"));
         int x = element.getLocation().getX();
@@ -56,13 +54,13 @@ public class Swipe {
         int endX = x + width / 10;
         int endY = startY;
 
-        //从右往左滑
+        //左滑
         driver.swipe(startX, startY, endX, endY, 500);
         Thread.sleep(10000);
     }
 
     @BeforeTest
-    public void  beforeTest() throws MalformedURLException {
+    public void beforeTest() throws MalformedURLException {
         System.out.println("beforeTest....");
         DesiredCapabilities capabilities = new DesiredCapabilities();
 
@@ -80,7 +78,7 @@ public class Swipe {
     }
 
     @AfterTest
-    public void afterTest(){
+    public void afterTest() {
         driver.quit();
     }
 

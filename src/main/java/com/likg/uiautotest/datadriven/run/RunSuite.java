@@ -1,4 +1,4 @@
-package com.likg.uiautotest.datadriven.login;
+package com.likg.uiautotest.datadriven.run;
 
 import com.likg.uiautotest.datadriven.base.CaseStep;
 import com.likg.uiautotest.datadriven.base.PageElement;
@@ -17,13 +17,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 运行多个组合用例
+ */
 public class RunSuite {
 
     private List<TestCase> testCaseList = new ArrayList<>();
-    //private List<PageElement> pageElementList = new ArrayList<PageElement>();
 
     private AndroidDriver<WebElement> driver;
-
 
     @BeforeTest
     public void beforeTest() throws IOException {
@@ -62,11 +63,10 @@ public class RunSuite {
 
     private List<CaseStep> loadCaseStep(String page, String caseCode) throws IOException {
         //获取用例步骤
-        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + page + "TestCase.xlsx", "caseStep", 1);
+        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + page + ".xlsx", "caseStep", 1);
 
         //获取页面元素
-        List<String[]> elementList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + page + "Element.xlsx", "location", 1);
-
+        List<String[]> elementList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + page + ".xlsx", "location", 1);
 
         List<CaseStep> caseStepList = new ArrayList<>();
         for (String[] data : dataList) {
@@ -101,7 +101,4 @@ public class RunSuite {
     public void afterTest() {
         DriverUtil.quitDriver();
     }
-
-
-
 }
