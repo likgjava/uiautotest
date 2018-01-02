@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="suite" parallel="tests" thread-count="2">
+    <test name="test1">
+        <parameter name="username" value="likg_java"/>
+        <parameter name="password" value="meimima2"/>
+        <parameter name="udid" value="192.168.120.101:5555"/>
+        <parameter name="port" value="4723"/>
+        <classes>
+            <class name="com.likg.uiautotest.concurrent.ConcurrentTest"/>
+        </classes>
+    </test>
+    <test name="test2">
+        <parameter name="username" value="tom"/>
+        <parameter name="password" value="tom"/>
+        <parameter name="udid" value="192.168.120.102:5555"/>
+        <parameter name="port" value="4733"/>
+        <classes>
+            <class name="com.likg.uiautotest.concurrent.ConcurrentTest"/>
+        </classes>
+    </test>
+</suite>
