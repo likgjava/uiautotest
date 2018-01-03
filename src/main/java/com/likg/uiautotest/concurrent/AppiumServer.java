@@ -28,14 +28,8 @@ public class AppiumServer {
         }
     }
 
-
-
     public static void main(String[] args) throws Exception {
         String pidByPort = SystemUtil.getPidByPort(4723);
         System.out.println("pidByPort=" + pidByPort);
     }
-
-
-
-
 }
