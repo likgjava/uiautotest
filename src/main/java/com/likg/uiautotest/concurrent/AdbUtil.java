@@ -1,9 +1,7 @@
 package com.likg.uiautotest.concurrent;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,21 +19,10 @@ public class AdbUtil {
         return devices;
     }
 
-    public static List<Integer> getUnusedPort(int startPort, int length) throws Exception {
-        List<Integer> portList = new ArrayList<>();
-        while (portList.size() < length) {
-            if (isUnusedPort(startPort)) {
-                portList.add(startPort);
-            }
-            startPort++;
-        }
-        return portList;
+    public static List<String> execAdb(String command) throws Exception {
+        return SystemUtil.execCmd("adb " + command);
     }
 
-    public static boolean isUnusedPort(int port) throws Exception {
-        List<String> resultList = execCmd("netstat -ano | findstr " + port);
-        return resultList.isEmpty();
-    }
 
     public static void main(String[] args) throws Exception {
         //System.out.println(getDevices());
@@ -43,36 +30,22 @@ public class AdbUtil {
         //isUnusedPort(4723);
         //System.out.println(getUnusedPort(4723, 5));
 
-        Process process = Runtime.getRuntime().exec("cmd /c appium -a 127.0.0.1 -p 4768 > D:/appium3.log");
+        Process process = Runtime.getRuntime().exec("cmd /c appium -a 127.0.0.1 -p 4723 > D:/appium3.log");
 
+        System.out.println("00000000000000");
         Thread.sleep(30000);
 
 
+        //process.waitFor();
+        System.out.println("1111111111111");
         process.destroy();
+        System.out.println("222222");
+
+        process.exitValue();
 
         //
 
     }
 
 
-    public static List<String> execAdb(String command) throws Exception {
-        return execCmd("adb " + command);
-    }
-
-    public static List<String> execCmd(String command) throws Exception {
-        List<String> lines;
-        Process process = Runtime.getRuntime().exec("cmd /c " + command);
-        InputStream inputStream = null;
-        try {
-            inputStream = process.getInputStream();
-            lines = IOUtils.readLines(inputStream);
-
-            System.out.println("error====" + IOUtils.readLines(process.getErrorStream(), "gbk"));
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            IOUtils.closeQuietly(inputStream);
-        }
-        return lines;
-    }
 }
