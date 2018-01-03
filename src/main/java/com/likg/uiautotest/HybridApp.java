@@ -3,6 +3,7 @@ package com.likg.uiautotest;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
+import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -26,7 +27,7 @@ public class HybridApp {
     @Test
     public void swipe() throws InterruptedException {
         System.out.println("helloWorld.......11.");
-        Thread.sleep(10000);
+        Thread.sleep(5000);
 
         MobileElement element = driver.findElementById("com.zhihu.android:id/ad_float")
                 .findElement(By.xpath("//android.view.ViewGroup[@index=0]"));
@@ -40,9 +41,22 @@ public class HybridApp {
         Set<String> contextHandles = driver.getContextHandles();
         System.out.println(contextHandles);
 
+        String pageSource = driver.getPageSource();
+        System.out.println("pageSource==1111="+pageSource);
+
+        driver.context("WEBVIEW_com.zhihu.android");
+
+        pageSource = driver.getPageSource();
+        System.out.println("pageSource==22222="+pageSource);
+
+        Thread.sleep(3000);
+
+        AndroidElement elementByClassName = driver.findElementByClassName("AnswerItem-appViewFootnotes");
+        System.out.println("text=="+elementByClassName.getText());
+
 
         //设置等待10s，每2s检查一次元素是否加载成功
-        WebDriverWait wait = new WebDriverWait(driver, 10, 2000);
+        /*WebDriverWait wait = new WebDriverWait(driver, 10, 2000);
         wait.until(new ExpectedCondition<WebElement>() {
             public WebElement apply(WebDriver webDriver) {
                 return webDriver.findElement(By.name("赞"));
@@ -51,7 +65,7 @@ public class HybridApp {
 
 
         AndroidElement elementById = driver.findElementById("com.zhihu.android:id/name");
-        System.out.println(elementById.getText());
+        System.out.println(elementById.getText());*/
 
 
         Thread.sleep(10000);
@@ -64,7 +78,8 @@ public class HybridApp {
         File apk = new File("D://apk/zhihu.apk");
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("deviceName", "mi");
-        capabilities.setCapability("app", apk.getAbsolutePath());
+        capabilities.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.zhihu.android");
+        capabilities.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, "com.zhihu.android.app.ui.activity.MainActivity");
 
         URL url = new URL("http://127.0.0.1:4723/wd/hub/");
         driver = new AndroidDriver<AndroidElement>(url, capabilities);
