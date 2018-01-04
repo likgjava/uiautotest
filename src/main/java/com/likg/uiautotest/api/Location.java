@@ -49,6 +49,9 @@ public class Location {
         System.out.println("element===="+element);
         element.click();
 
+        driver.findElementByAndroidUIAutomator("new UiSelector().text(\"每日推荐\")");
+
+
         Thread.sleep(10000);
 
     }
