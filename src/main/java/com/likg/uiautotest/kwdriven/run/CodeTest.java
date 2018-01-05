@@ -1,6 +1,6 @@
-package com.likg.uiautotest.datadriven.run;
+package com.likg.uiautotest.kwdriven.run;
 
-import com.likg.uiautotest.datadriven.util.DriverUtil;
+import com.likg.uiautotest.kwdriven.util.DriverUtil;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;

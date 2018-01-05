@@ -1,4 +1,4 @@
-package com.likg.uiautotest.datadriven.constant;
+package com.likg.uiautotest.kwdriven.constant;
 
 /**
  * 常量

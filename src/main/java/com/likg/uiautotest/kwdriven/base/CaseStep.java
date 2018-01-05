@@ -1,4 +1,4 @@
-package com.likg.uiautotest.datadriven.base;
+package com.likg.uiautotest.kwdriven.base;
 
 /**
  * 用例步骤

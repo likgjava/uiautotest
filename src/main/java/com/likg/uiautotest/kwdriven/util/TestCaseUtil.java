@@ -1,9 +1,9 @@
-package com.likg.uiautotest.datadriven.util;
+package com.likg.uiautotest.kwdriven.util;
 
-import com.likg.uiautotest.datadriven.base.CaseStep;
-import com.likg.uiautotest.datadriven.base.PageElement;
-import com.likg.uiautotest.datadriven.base.TestCase;
-import com.likg.uiautotest.datadriven.constant.Constant;
+import com.likg.uiautotest.kwdriven.base.CaseStep;
+import com.likg.uiautotest.kwdriven.base.PageElement;
+import com.likg.uiautotest.kwdriven.base.TestCase;
+import com.likg.uiautotest.kwdriven.constant.Constant;
 import io.appium.java_client.android.AndroidDriver;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;

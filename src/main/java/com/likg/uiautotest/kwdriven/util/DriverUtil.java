@@ -1,4 +1,4 @@
-package com.likg.uiautotest.datadriven.util;
+package com.likg.uiautotest.kwdriven.util;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
