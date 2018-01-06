@@ -12,15 +12,13 @@ import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 public class Input {
 
     private static Logger log  =  Logger.getLogger(Input. class );
 
-    //protected final Log log = LogFactory.getLog(getClass());
-
-    AndroidDriver<AndroidElement> driver;
-
+    private AndroidDriver<AndroidElement> driver;
 
     @Test
     public void sendKeys() throws InterruptedException {
@@ -38,9 +36,6 @@ public class Input {
         System.out.println(element.getTagName());
         System.out.println(element.getText());
         Thread.sleep(1000);
-
-
-
 
 
         System.out.println("sendKeys click...");
@@ -73,36 +68,16 @@ public class Input {
     public void  beforeTest() throws MalformedURLException {
         System.out.println("beforeTest....");
         DesiredCapabilities capabilities = new DesiredCapabilities();
-
-//        File apk = new File("D://apk/zhihu.apk");
-//        System.out.println(apk.exists());
-//
-//        capabilities.setCapability("deviceName", "xiaomi");
-//        capabilities.setCapability("app", apk.getAbsolutePath());
-//        URL url = new URL("http://127.0.0.1:4723/wd/hub/");
-//        System.out.println("11111111111");
-//        driver = new AndroidDriver<AndroidElement>(url, capabilities);
-//        System.out.println("2222222");
-//        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-//        System.out.println("333333333333333333333333");
-
-
-        // set up appium
-        //File app = new File("D://apk/ContactManager.apk");
-        //capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
         capabilities.setCapability("platformName", "Android");
         capabilities.setCapability("deviceName","Android Emulator");
         capabilities.setCapability("platformVersion", "6.0");
-        //capabilities.setCapability("app", app.getAbsolutePath());
         capabilities.setCapability("appPackage", "com.android.dialer");
         capabilities.setCapability("appActivity", ".DialtactsActivity");
-
         capabilities.setCapability("unicodeKeyboard", "true");
         capabilities.setCapability("resetKeyboard", "true");
 
-        driver = new AndroidDriver<AndroidElement>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-        System.out.println("333333333333333333333333");
-
+        driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @AfterTest

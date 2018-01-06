@@ -1,7 +1,7 @@
 package com.likg.uiautotest.api;
 
 import io.appium.java_client.android.AndroidDriver;
-import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterTest;
@@ -10,35 +10,38 @@ import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Location {
 
-    private static Logger log  =  Logger.getLogger(Location. class );
-
-    //protected final Log log = LogFactory.getLog(getClass());
-
-    AndroidDriver<WebElement> driver;
-
+    private AndroidDriver<WebElement> driver;
 
     @Test
-    public void sendKeys() throws InterruptedException {
-        log.error("1111111111111111111111111111111111111111111");
-        System.out.println("helloWorld........");
+    public void byId() {
+        //获取单个匹配的元素
+        WebElement element = driver.findElementById("com.miui.home:id/search_but");
+        WebElement element2 = driver.findElement(By.id("com.miui.home:id/search_but"));
 
-        int x = driver.manage().window().getSize().getWidth();
-        int y = driver.manage().window().getSize().getHeight();
-        System.out.println("x===="+x);
-        System.out.println("y===="+y);
+        //获取多个匹配的元素
+        List<WebElement> elementList = driver.findElementsById("com.miui.home:id/search_but");
+        List<WebElement> elementList2 = driver.findElements(By.id("com.miui.home:id/search_but"));
+    }
 
+    @Test
+    public void byClassName() {
+        //获取单个匹配的元素
+        WebElement element = driver.findElementByClassName("android.widget.TextView");
+        WebElement element2 = driver.findElement(By.className("android.widget.TextView"));
+
+        //获取多个匹配的元素
+        List<WebElement> elementList = driver.findElementsByClassName("android.widget.TextView");
+        List<WebElement> elementList2 = driver.findElements(By.className("android.widget.TextView"));
+    }
+
+    @Test
+    public void byAccessibilityId() throws InterruptedException {
         Thread.sleep(3000);
-
-        //左滑
-        //driver.swipe(x * 9 / 10, y / 2, x / 10, y / 2, 500);
-        //Thread.sleep(3000);
-
-        //左滑
-        //driver.swipe(x * 9 / 10, y / 2, x / 10, y / 2, 500);
-        //Thread.sleep(3000);
 
         String pageSource = driver.getPageSource();
         System.out.println("pageSource=="+pageSource);
@@ -51,9 +54,7 @@ public class Location {
 
         driver.findElementByAndroidUIAutomator("new UiSelector().text(\"每日推荐\")");
 
-
         Thread.sleep(10000);
-
     }
 
     @BeforeTest
@@ -61,26 +62,9 @@ public class Location {
         System.out.println("beforeTest....");
         DesiredCapabilities capabilities = new DesiredCapabilities();
 
-//        File apk = new File("D://apk/zhihu.apk");
-//        System.out.println(apk.exists());
-//
-//        capabilities.setCapability("deviceName", "xiaomi");
-//        capabilities.setCapability("app", apk.getAbsolutePath());
-//        URL url = new URL("http://127.0.0.1:4723/wd/hub/");
-//        System.out.println("11111111111");
-//        driver = new AndroidDriver<AndroidElement>(url, capabilities);
-//        System.out.println("2222222");
-//        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-//        System.out.println("333333333333333333333333");
-
-
-        // set up appium
-        //File app = new File("D://apk/ContactManager.apk");
-        //capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
         capabilities.setCapability("platformName", "Android");
-        capabilities.setCapability("deviceName","Android Emulator");
+        capabilities.setCapability("deviceName","emulator");
         capabilities.setCapability("platformVersion", "6.0");
-        //capabilities.setCapability("app", app.getAbsolutePath());
         capabilities.setCapability("appPackage", "com.android.dialer");
         capabilities.setCapability("appActivity", ".DialtactsActivity");
 
@@ -88,16 +72,11 @@ public class Location {
         capabilities.setCapability("resetKeyboard", "true");
 
         driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-        System.out.println("333333333333333333333333");
-
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @AfterTest
     public void afterTest(){
         driver.quit();
     }
-
-
-
-
 }

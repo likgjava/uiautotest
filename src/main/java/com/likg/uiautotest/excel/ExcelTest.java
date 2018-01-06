@@ -96,12 +96,29 @@ public class ExcelTest {
         Row row = sheet.createRow(lastRowNum + 1);
         row.createCell(0).setCellValue(4);
         row.createCell(1).setCellValue("appium");
+        row.createCell(2).setCellValue(10);
+
+        FileOutputStream outputStream = new FileOutputStream(file);
+        workbook.write(outputStream);
+
+        outputStream.close();
+        workbook.close();
+    }
+
+    //插入图片链接
+    @Test
+    public void insertImgLink() throws IOException {
+        File file = new File("data/low.xls");
+        Workbook workbook = ExcelUtil.getWorkbook(file);
+
+        Sheet sheet = workbook.getSheetAt(0);
+        int lastRowNum = sheet.getLastRowNum();
+
+        Row row = sheet.createRow(lastRowNum + 1);
         Cell cell = row.createCell(2);
-
-
+        cell.setCellValue("步骤截图");
 
         CreationHelper createHelper = workbook.getCreationHelper();
-        cell.setCellValue("步骤截图");
         Hyperlink link = createHelper.createHyperlink(HyperlinkType.FILE);
         link.setAddress("./appium.png");
         cell.setHyperlink(link);
