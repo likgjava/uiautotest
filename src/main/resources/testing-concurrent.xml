@@ -7,7 +7,7 @@
         <parameter name="udid" value="192.168.111.101:5555"/>
         <parameter name="port" value="4723"/>
         <classes>
-            <class name="com.likg.uiautotest.concurrent.ConcurrentTest"/>
+            <class name="cn.itcast.autotest.concurrent.ConcurrentTest"/>
         </classes>
     </test>
     <test name="test2">
@@ -16,7 +16,7 @@
         <parameter name="udid" value="192.168.111.102:5555"/>
         <parameter name="port" value="4733"/>
         <classes>
-            <class name="com.likg.uiautotest.concurrent.ConcurrentTest"/>
+            <class name="cn.itcast.autotest.concurrent.ConcurrentTest"/>
         </classes>
     </test>
 </suite>

@@ -1,0 +1,14 @@
+package cn.itcast.autotest.testng;
+
+import org.junit.Test;
+
+/**
+ * junit测试类
+ * @author likg
+ */
+public class JunitTest {
+    @Test
+    public void foo(){
+        System.out.println("foo...");
+    }
+}

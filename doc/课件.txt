@@ -483,7 +483,7 @@ public class XmlParameterTest {
     <test name="test">
         <parameter name="username" value="tom"/>
         <classes>
-            <class name="com.likg.uiautotest.testng.XmlParameterTest"/>
+            <class name="XmlParameterTest"/>
         </classes>
     </test>
 </suite>
@@ -530,7 +530,7 @@ public class JunitTest {
 <suite name="suite" junit="true">
     <test name="test">
         <classes>
-            <class name="com.likg.uiautotest.testng.JunitTest"/>
+            <class name="JunitTest"/>
         </classes>
     </test>
 </suite>
@@ -565,7 +565,7 @@ public class TestngOrder {
 <suite name="suite">
     <test name="test">
         <classes>
-            <class name="com.likg.uiautotest.testng.TestngOrder">
+            <class name="TestngOrder">
                 <methods>
                     <include name="one" />
                     <include name="two" />
@@ -615,7 +615,7 @@ public class TestngGroups {
         </groups>
 
         <classes>
-            <class name="com.likg.uiautotest.testng.TestngGroups"/>
+            <class name="TestngGroups"/>
         </classes>
     </test>
 </suite>
@@ -663,7 +663,7 @@ public class TestngGroupsOfGroups {
             </run>
         </groups>
         <classes>
-            <class name="com.likg.uiautotest.testng.TestngGroupsOfGroups"/>
+            <class name="TestngGroupsOfGroups"/>
         </classes>
     </test>
 </suite>

@@ -10,7 +10,7 @@
         </groups>
 
         <classes>
-            <class name="com.likg.uiautotest.testng.TestngGroups"/>
+            <class name="cn.itcast.autotest.testng.TestngGroups"/>
         </classes>
     </test>
 </suite>

@@ -3,7 +3,7 @@
 <suite name="suite">
     <test name="test">
         <classes>
-            <class name="com.likg.uiautotest.testng.TestngOrder">
+            <class name="cn.itcast.autotest.testng.TestngOrder">
                 <methods>
                     <include name="one" />
                     <include name="two" />

@@ -19,7 +19,7 @@
             </run>
         </groups>
         <classes>
-            <class name="com.likg.uiautotest.testng.TestngGroupsOfGroups"/>
+            <class name="cn.itcast.autotest.testng.TestngGroupsOfGroups"/>
         </classes>
     </test>
 </suite>
