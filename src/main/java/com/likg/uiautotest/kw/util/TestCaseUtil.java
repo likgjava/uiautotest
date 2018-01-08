@@ -1,9 +1,11 @@
 package com.likg.uiautotest.kw.util;
 
+import com.likg.uiautotest.kw.constant.Constant;
+import com.likg.uiautotest.kw.domain.CaseList;
 import com.likg.uiautotest.kw.domain.CaseStep;
 import com.likg.uiautotest.kw.domain.PageElement;
+import com.likg.uiautotest.kw.domain.StepData;
 import com.likg.uiautotest.kw.domain.TestCase;
-import com.likg.uiautotest.kw.constant.Constant;
 import io.appium.java_client.android.AndroidDriver;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -16,7 +18,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -45,9 +46,8 @@ public class TestCaseUtil {
                 System.out.println("toast 1111111111111111111111");
                 WebDriverWait wait = new WebDriverWait(driver, 15);
                 String xpath = String.format(".//*[contains(@text,'%s')]", caseStep.getStepData().getExpectedResult());
-                System.out.println("toast 2222222222222222222 xpath=" + xpath);
                 element = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
-                System.out.println("toast 33333333333333333333333333");
+                System.out.println("toast element=" + element);
                 break;
             }
             default: {
@@ -102,8 +102,10 @@ public class TestCaseUtil {
         }
 
         if (allStepSuccess) {
-            testCase.setExecuteResult("PASS");
-            updateExecuteResultOfTestCase(testCase.getPage(), testCase.getCaseCode(), "PASS", isSuite);
+            testCase.setExecuteResult(Constant.PASS);
+            updateExecuteResultOfTestCase(testCase.getPage(), testCase.getCaseCode(), Constant.PASS, isSuite);
+        } else {
+            testCase.setExecuteResult(Constant.FAIL);
         }
 
         //后置处理
@@ -116,12 +118,10 @@ public class TestCaseUtil {
     }
 
     private static void saveScreenshot(AndroidDriver<WebElement> driver, TestCase testCase, CaseStep caseStep, boolean isSuite) throws IOException {
-
         File screenshot = driver.getScreenshotAs(OutputType.FILE);
         String fileName = new SimpleDateFormat("yyyyMMdd-HHmmss-SSS").format(new Date()) + ".jpg";
         File destFile = new File(Constant.TEST_CASE_DATA_DIR + "screenshot/" + fileName);
         FileUtils.copyFile(screenshot, destFile);
-
 
         updateScreenshotOfCaseStep(testCase.getCaseCode(), caseStep.getStepCode(), "screenshot/" + fileName, isSuite);
     }
@@ -175,7 +175,7 @@ public class TestCaseUtil {
             filePath = Constant.TEST_CASE_DATA_DIR + "scene.xlsx";
         }
         int rowNum = ExcelUtil.getRowNum(filePath, "stepData", 0, caseCode, 1, stepCode);
-        System.out.println("rowNum==="+rowNum);
+        System.out.println("rowNum===" + rowNum);
 
         ExcelUtil.setCellValue(filePath, "stepData", rowNum, 5, result);
     }
@@ -192,18 +192,89 @@ public class TestCaseUtil {
         ExcelUtil.setCellValueOfLink(filePath, "stepData", rowNum, 6, screenshotPath);
     }
 
-    public static List<PageElement> loadPageElement(String page) throws IOException {
-        List<PageElement> pageElementList = new ArrayList<>();
-        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + page + ".xlsx", "location", 1);
+    public static CaseList loadCaseList(String caseType) throws IOException {
+        //获取用例列表数据
+        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + caseType + ".xlsx", "testCase", 1);
+
+        //组装数据
+        CaseList caseList = new CaseList();
+        caseList.setType(caseType);
         for (String[] data : dataList) {
-            PageElement pageElement = new PageElement();
-            pageElement.setElementName(data[0]);
-            pageElement.setElementDesc(data[1]);
-            pageElement.setLocationType(data[2]);
-            pageElement.setLocationValue(data[3]);
-            pageElementList.add(pageElement);
+            TestCase testCase = new TestCase();
+            testCase.setCaseCode(data[0]);
+            testCase.setCaseDesc(data[1]);
+            testCase.setPostProcess(data[2]);
+
+            //加载用例步骤数据
+            loadCaseStep(caseType, testCase);
+
+            caseList.getTestCaseList().add(testCase);
         }
-        return pageElementList;
+        return caseList;
+    }
+
+    private static void loadCaseStep(String caseType, TestCase testCase) throws IOException {
+        //获取用例步骤数据
+        String page = testCase.getPage();
+        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + page + ".xlsx", "caseStep", 1);
+
+        //组装用例步骤数据
+        for (String[] data : dataList) {
+            if (testCase.getCaseCode().equals(data[0])) {
+                CaseStep caseStep = new CaseStep();
+                caseStep.setCaseCode(data[0]);
+                caseStep.setStepCode(data[1]);
+                caseStep.setStepDesc(data[2]);
+                caseStep.setAction(data[3]);
+                caseStep.setElementName(data[4]);
+
+                //加载该步骤操作的元素信息
+                PageElement pageElement = loadPageElement(caseStep, page);
+                caseStep.setPageElement(pageElement);
+
+                //加载该步骤的测试数据
+                StepData stepData = loadStepData(caseType, testCase.getCaseCode(), caseStep.getStepCode());
+                caseStep.setStepData(stepData);
+
+                testCase.getCaseStepList().add(caseStep);
+            }
+        }
+    }
+
+    private static StepData loadStepData(String caseType, String caseCode, String stepCode) throws IOException {
+        //获取步骤测试数据
+        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + caseType + ".xlsx", "stepData", 1);
+
+        //组装数据
+        for (String[] data : dataList) {
+            if (caseCode.equals(data[0]) && stepCode.equals(data[1])) {
+                StepData stepData = new StepData();
+                stepData.setCaseCode(data[0]);
+                stepData.setStepCode(data[1]);
+                stepData.setInputData(data[3]);
+                stepData.setExpectedResult(data[4]);
+                return stepData;
+            }
+        }
+        return null;
+    }
+
+    private static PageElement loadPageElement(CaseStep caseStep, String page) throws IOException {
+        //获取页面元素信息数据
+        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + page + ".xlsx", "location", 1);
+
+        //组装数据
+        for (String[] data : dataList) {
+            if (caseStep.getElementName().equals(data[0])) {
+                PageElement pageElement = new PageElement();
+                pageElement.setElementName(data[0]);
+                pageElement.setElementDesc(data[1]);
+                pageElement.setLocationType(data[2]);
+                pageElement.setLocationValue(data[3]);
+                return pageElement;
+            }
+        }
+        return null;
     }
 
 }
