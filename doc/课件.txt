@@ -1087,6 +1087,14 @@ d:
 cd /zzz/project
 java -classpath "%classpath%;./autotest-1.0-SNAPSHOT-jar-with-dependencies.jar" org.testng.TestNG -testclass cn.itcast.autotest.HelloWorld
 
+
+
+mvn clean assembly:assembly
+copy target\autotest-1.0-SNAPSHOT-jar-with-dependencies.jar autotest-1.0-SNAPSHOT-jar-with-dependencies.jar /Y
+java -classpath "%classpath%;./autotest-1.0-SNAPSHOT-jar-with-dependencies.jar" org.testng.TestNG -testclass cn.itcast.autotest.T
+
+
+
 ===================================================================================================================================
 其他知识点：
 
