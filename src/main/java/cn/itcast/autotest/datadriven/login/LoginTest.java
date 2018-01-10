@@ -1,12 +1,13 @@
-package cn.itcast.autotest.po.f1;
+package cn.itcast.autotest.datadriven.login;
 
+import cn.itcast.autotest.po.util.DriverUtil;
+import com.alibaba.fastjson.JSONObject;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
-import io.appium.java_client.remote.MobileCapabilityType;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -15,9 +16,8 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.concurrent.TimeUnit;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * 登录流程测试
@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 public class LoginTest {
     private AndroidDriver<AndroidElement> driver;
     private LoginProxy loginProxy;
+    private JSONObject testData;
 
     /**
      * 验证登录成功
@@ -32,10 +33,12 @@ public class LoginTest {
      */
     @Test
     public void loginSuccess() throws Exception {
-        loginProxy.login("likg_java", "meimima");
+        JSONObject jsonObject = testData.getJSONObject("loginSuccess");
+        loginProxy.login(jsonObject.getString("userName"), jsonObject.getString("password"));
 
         final WebDriverWait wait = new WebDriverWait(driver, 5);
         WebElement until = wait.until(new ExpectedCondition<WebElement>() {
+            @Override
             public WebElement apply(WebDriver webDriver) {
                 return webDriver.findElement(By.id("net.csdn.csdnplus:id/tvtitle"));
             }
@@ -50,8 +53,9 @@ public class LoginTest {
      * @throws Exception ex
      */
     @Test
-    public void loginUsernameIsNull() throws Exception {
-        loginProxy.login("", "meimima");
+    public void loginUserNameIsNull() throws Exception {
+        JSONObject jsonObject = testData.getJSONObject("loginUserNameIsNull");
+        loginProxy.login(jsonObject.getString("userName"), jsonObject.getString("password"));
 
         final String toast = "用户名密码不能为空";
         final WebDriverWait wait = new WebDriverWait(driver, 5);
@@ -68,7 +72,8 @@ public class LoginTest {
      */
     @Test
     public void loginPasswordIsError() throws Exception {
-        loginProxy.login("likg_java", "123");
+        JSONObject jsonObject = testData.getJSONObject("loginPasswordIsError");
+        loginProxy.login(jsonObject.getString("userName"), jsonObject.getString("password"));
 
         String toast = "用户名或密码错误";
         final WebDriverWait wait = new WebDriverWait(driver, 5);
@@ -80,21 +85,24 @@ public class LoginTest {
     }
 
     @BeforeTest
-    public void beforeTest() throws MalformedURLException {
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("deviceName", "emulator");
-        capabilities.setCapability("appPackage", "net.csdn.csdnplus");
-        capabilities.setCapability("appActivity", "net.csdn.csdnplus.activity.SplashActivity");
-        capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "Uiautomator2");
+    public void beforeTest() throws Exception {
+        //初始化驱动
+        this.driver = DriverUtil.getDriver();
 
-        driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub/"), capabilities);
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        //加载测试数据
+        this.testData = this.loadTestData();
 
-        this.loginProxy = new LoginProxy(driver);
+        this.loginProxy = new LoginProxy();
+    }
+
+    private JSONObject loadTestData() throws IOException {
+        File dataFile = new File(System.getProperty("user.dir") + "/datadriven/testData.json");
+        String data = FileUtils.readFileToString(dataFile);
+        return JSONObject.parseObject(data);
     }
 
     @AfterTest
     public void afterTest() {
-        driver.quit();
+        DriverUtil.quitDriver();
     }
 }

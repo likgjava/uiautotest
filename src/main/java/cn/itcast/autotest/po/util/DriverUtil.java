@@ -1,8 +1,8 @@
-package cn.itcast.autotest.kw.util;
+package cn.itcast.autotest.po.util;
 
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.remote.MobileCapabilityType;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.MalformedURLException;
@@ -14,9 +14,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class DriverUtil {
 
-    private static AndroidDriver<WebElement> driver;
+    private static AndroidDriver<AndroidElement> driver;
 
-    public static AndroidDriver<WebElement> getDriver() throws MalformedURLException {
+    public static AndroidDriver<AndroidElement> getDriver() throws Exception {
         System.out.println("getDriver...");
         if (driver == null) {
             initDriver();

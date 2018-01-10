@@ -1,0 +1,14 @@
+{
+    "loginSuccess": {
+        "userName": "likg_java",
+        "password": "meimima"
+    },
+    "loginUserNameIsNull": {
+        "userName": "",
+        "password": "abc"
+    },
+    "loginPasswordIsError": {
+        "userName": "likg_java",
+        "password": "123"
+    }
+}
