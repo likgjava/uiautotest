@@ -1093,6 +1093,15 @@ mvn clean assembly:assembly
 copy target\autotest-1.0-SNAPSHOT-jar-with-dependencies.jar autotest-1.0-SNAPSHOT-jar-with-dependencies.jar /Y
 java -classpath "%classpath%;./autotest-1.0-SNAPSHOT-jar-with-dependencies.jar" org.testng.TestNG -testclass cn.itcast.autotest.T
 
+https://github.com/likgjava/uiautotest.git
+
+mvn clean assembly:assembly
+
+copy target\autotest-1.0-SNAPSHOT-jar-with-dependencies.jar autotest-1.0-SNAPSHOT-jar-with-dependencies.jar /Y
+java -classpath "target/autotest-1.0-SNAPSHOT-jar-with-dependencies.jar" org.testng.TestNG -testclass cn.itcast.autotest.T -d test-report/%BUILD_ID%
+
+test-report/${BUILD_ID}
+
 
 
 ===================================================================================================================================
