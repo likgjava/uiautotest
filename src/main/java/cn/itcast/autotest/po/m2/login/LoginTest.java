@@ -27,6 +27,7 @@ public class LoginTest {
      */
     @Test
     public void loginSuccess() throws Exception {
+        System.out.println("loginSuccess 开始执行.....");
         loginProxy.login("likg_java", "meimima");
 
         final WebDriverWait wait = new WebDriverWait(driver, 5);
@@ -50,6 +51,7 @@ public class LoginTest {
         loginProxy.login("", "meimima");
 
         final String toast = "用户名密码不能为空";
+        System.out.println("toast=======" + toast);
         final WebDriverWait wait = new WebDriverWait(driver, 5);
         String xpath = String.format(".//*[contains(@text,'%s')]", toast);
         WebElement until = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
@@ -67,6 +69,7 @@ public class LoginTest {
         loginProxy.login("likg_java", "123");
 
         String toast = "用户名或密码错误";
+        System.out.println("toast=======" + toast);
         final WebDriverWait wait = new WebDriverWait(driver, 5);
         String xpath = String.format(".//*[contains(@text,'%s')]", toast);
         WebElement toastEle = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
