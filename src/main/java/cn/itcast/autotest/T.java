@@ -1,9 +1,13 @@
 package cn.itcast.autotest;
 
+import org.apache.commons.io.FileUtils;
+import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -12,7 +16,7 @@ import java.util.Date;
 public class T {
 
     @Test
-    public void t() {
+    public void t() throws IOException {
         System.out.println("t......方法调试。。。123");
         String userDir = System.getProperty("user.dir");
         System.out.println("userDir====" + userDir);
@@ -25,6 +29,14 @@ public class T {
         System.out.println(i);
 
         Reporter.log("t()方法输出的内容....");
+
+
+        String data = FileUtils.readFileToString(new File(System.getProperty("user.dir") + "/data/t.txt"));
+        System.out.println("data===="+data);
+        Assert.assertEquals(data, "中文123");
+        System.out.println("通过了.......11111");
+
+        Assert.assertEquals(data, "中文1234");
 
     }
 
