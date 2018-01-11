@@ -21,11 +21,12 @@ public class TestngListener extends TestListenerAdapter {
         try {
             //保存失败截图
             File screenshot = DriverUtil.getDriver().getScreenshotAs(OutputType.FILE);
-            String filePath = "/screeshot/" + System.currentTimeMillis() + ".png";
+            String filePath = "/screenshot/" + System.currentTimeMillis() + ".png";
             File destFile = new File(System.getProperty("user.dir") + filePath);
             FileUtils.copyFile(screenshot, destFile);
 
             //输出到测试报告中
+            Reporter.setEscapeHtml(false);
             String html = String.format("<img src='..%s'>error step screenshot</img>", filePath);
             System.out.println("html======="+html);
             Reporter.log("error-->" + html);
