@@ -18,5 +18,4 @@ public class LoginHandle {
     public void clickLoginBut() throws Exception {
         this.loginPage.findLoginButElement().click();
     }
-
 }
