@@ -29,31 +29,31 @@ public class LoginTest {
 
     /**
      * 验证登录成功
+     *
      * @throws Exception ex
      */
     @Test
     public void loginSuccess() throws Exception {
+        System.out.println("loginSuccess....");
+        Thread.sleep(3000);
+
         JSONObject jsonObject = testData.getJSONObject("loginSuccess");
         loginProxy.login(jsonObject.getString("userName"), jsonObject.getString("password"));
 
-        final WebDriverWait wait = new WebDriverWait(driver, 5);
-        WebElement until = wait.until(new ExpectedCondition<WebElement>() {
-            @Override
-            public WebElement apply(WebDriver webDriver) {
-                return webDriver.findElement(By.id("net.csdn.csdnplus:id/tvtitle"));
-            }
-        });
-        Assert.assertEquals(until.getText(), "头条");
-
-        Thread.sleep(10000);
+        AndroidElement element = driver.findElement(By.id("net.csdn.csdnplus:id/tvtitle"));
+        Assert.assertEquals(element.getText(), "头条");
     }
 
     /**
      * 验证用户名为空
+     *
      * @throws Exception ex
      */
     @Test
     public void loginUserNameIsNull() throws Exception {
+        System.out.println("loginUserNameIsNull....");
+        Thread.sleep(3000);
+
         JSONObject jsonObject = testData.getJSONObject("loginUserNameIsNull");
         loginProxy.login(jsonObject.getString("userName"), jsonObject.getString("password"));
 
@@ -68,10 +68,14 @@ public class LoginTest {
 
     /**
      * 验证密码错误
+     *
      * @throws Exception ex
      */
     @Test
     public void loginPasswordIsError() throws Exception {
+        System.out.println("loginPasswordIsError....");
+        Thread.sleep(3000);
+
         JSONObject jsonObject = testData.getJSONObject("loginPasswordIsError");
         loginProxy.login(jsonObject.getString("userName"), jsonObject.getString("password"));
 
@@ -91,12 +95,13 @@ public class LoginTest {
 
         //加载测试数据
         this.testData = this.loadTestData();
+        System.out.println("testData=" + testData.toJSONString());
 
         this.loginProxy = new LoginProxy();
     }
 
     private JSONObject loadTestData() throws IOException {
-        File dataFile = new File(System.getProperty("user.dir") + "/datadriven/testData.json");
+        File dataFile = new File(System.getProperty("user.dir") + "/data/datadriven/testData.json");
         String data = FileUtils.readFileToString(dataFile);
         return JSONObject.parseObject(data);
     }

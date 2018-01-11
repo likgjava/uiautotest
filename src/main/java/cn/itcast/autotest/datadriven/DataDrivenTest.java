@@ -25,7 +25,7 @@ public class DataDrivenTest {
 
     @DataProvider
     public Object[][] data() throws IOException {
-        File file = new File(System.getProperty("user.dir") + "/data/calculator.dat");
+        File file = new File(System.getProperty("user.dir") + "/data/datadriven/calculator.dat");
         List<String> lineList = FileUtils.readLines(file);
         Object[][] dataList = new Object[lineList.size()][3];
         for (int i = 0; i < lineList.size(); i++) {
@@ -49,7 +49,7 @@ public class DataDrivenTest {
 
         Assert.assertEquals(result, sum);
 
-        Thread.sleep(2000);
+        Thread.sleep(5000);
     }
 
     //输入数字
