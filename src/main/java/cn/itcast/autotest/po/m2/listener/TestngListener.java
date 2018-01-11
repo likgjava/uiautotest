@@ -16,7 +16,7 @@ public class TestngListener extends TestListenerAdapter {
     @Override
     public void onTestFailure(ITestResult tr) {
         super.onTestFailure(tr);
-        System.out.println("error...");
+        System.out.println("onTestFailure start...");
 
         try {
             //保存失败截图
@@ -27,6 +27,7 @@ public class TestngListener extends TestListenerAdapter {
 
             //输出到测试报告中
             String html = String.format("<img src='..%s'>error step screenshot</img>", filePath);
+            System.out.println("html======="+html);
             Reporter.log("error-->" + html);
         } catch (Exception e) {
             e.printStackTrace();
