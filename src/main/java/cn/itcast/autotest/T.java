@@ -13,6 +13,7 @@ public class T {
 
     @Test
     public void t() {
+        System.out.println("t......方法调试。。。123");
         String userDir = System.getProperty("user.dir");
         System.out.println("userDir====" + userDir);
 
@@ -29,6 +30,7 @@ public class T {
 
     @Test
     public void printTime() {
+        System.out.println("printTime......方法调试。。。123");
         String format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         System.out.println("time==" + format);
 
