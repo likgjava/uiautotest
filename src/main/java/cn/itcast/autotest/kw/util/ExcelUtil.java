@@ -86,7 +86,7 @@ public class ExcelUtil {
             Row row = sheet.getRow(i);
             Cell c1 = row.getCell(column1);
             Cell c2 = row.getCell(column2);
-            System.out.println("k1="+keyWord1 + " k2="+ keyWord2 + " ck1="+c1.getStringCellValue() + " ck2="+c2.getStringCellValue());
+            //System.out.println("k1="+keyWord1 + " k2="+ keyWord2 + " ck1="+c1.getStringCellValue() + " ck2="+c2.getStringCellValue());
             if (keyWord1.equals(c1.getStringCellValue()) && keyWord2.equals(c2.getStringCellValue())) {
                 rowNum = i;
                 break;

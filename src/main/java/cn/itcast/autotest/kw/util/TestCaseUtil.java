@@ -192,13 +192,13 @@ public class TestCaseUtil {
         ExcelUtil.setCellValueOfLink(filePath, "stepData", rowNum, 6, screenshotPath);
     }
 
-    public static CaseList loadCaseList(String caseType) throws IOException {
+    public static CaseList loadCaseList() throws IOException {
         //获取用例列表数据
-        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + caseType + ".xlsx", "testCase", 1);
+        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + "suite.xlsx", "testCase", 1);
 
         //组装数据
         CaseList caseList = new CaseList();
-        caseList.setType(caseType);
+        //caseList.setType(caseType);
         for (String[] data : dataList) {
             TestCase testCase = new TestCase();
             testCase.setCaseCode(data[0]);
@@ -206,14 +206,14 @@ public class TestCaseUtil {
             testCase.setPostProcess(data[2]);
 
             //加载用例步骤数据
-            loadCaseStep(caseType, testCase);
+            loadCaseStep(testCase);
 
             caseList.getTestCaseList().add(testCase);
         }
         return caseList;
     }
 
-    private static void loadCaseStep(String caseType, TestCase testCase) throws IOException {
+    private static void loadCaseStep(TestCase testCase) throws IOException {
         //获取用例步骤数据
         String page = testCase.getPage();
         List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + page + ".xlsx", "caseStep", 1);
@@ -233,7 +233,7 @@ public class TestCaseUtil {
                 caseStep.setPageElement(pageElement);
 
                 //加载该步骤的测试数据
-                StepData stepData = loadStepData(caseType, testCase.getCaseCode(), caseStep.getStepCode());
+                StepData stepData = loadStepData(testCase.getCaseCode(), caseStep.getStepCode());
                 caseStep.setStepData(stepData);
 
                 testCase.getCaseStepList().add(caseStep);
@@ -241,9 +241,9 @@ public class TestCaseUtil {
         }
     }
 
-    private static StepData loadStepData(String caseType, String caseCode, String stepCode) throws IOException {
+    private static StepData loadStepData(String caseCode, String stepCode) throws IOException {
         //获取步骤测试数据
-        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + caseType + ".xlsx", "stepData", 1);
+        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + "suite.xlsx", "stepData", 1);
 
         //组装数据
         for (String[] data : dataList) {

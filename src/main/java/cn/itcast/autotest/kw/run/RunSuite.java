@@ -34,13 +34,13 @@ public class RunSuite {
         report.setStartTime(System.currentTimeMillis());
 
         //加载用例套件
-        CaseList caseList = TestCaseUtil.loadCaseList("suite");
+        CaseList caseList = TestCaseUtil.loadCaseList();
 
         //执行用例
         for (TestCase testCase : caseList.getTestCaseList()) {
-            System.out.println(String.format("------start execute testCase=[%s]", testCase.getCaseDesc()));
+            System.out.println(String.format("------start execute case=[%s]", testCase.getCaseDesc()));
             TestCaseUtil.executeTestCase(driver, testCase, true);
-            System.out.println(String.format("------end execute testCase=[%s]", testCase.getCaseDesc()));
+            System.out.println(String.format("------end execute case=[%s]", testCase.getCaseDesc()));
         }
         report.setEndTime(System.currentTimeMillis());
 

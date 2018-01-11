@@ -59,28 +59,28 @@ public class ReportUtil {
         report.setStepSkipCount(stepSkipCount);
         report.setTakeTime((int) ((report.getEndTime() - report.getStartTime()) / 1000));
 
-        updateReportToExcel(caseList.getType(), report);
+        updateReportToExcel(report);
     }
 
-    private static void updateReportToExcel(String caseType, Report report) throws IOException {
-        String filePath = Constant.TEST_CASE_DATA_DIR + caseType + ".xlsx";
+    private static void updateReportToExcel(Report report) throws IOException {
+        String filePath = Constant.TEST_CASE_DATA_DIR + "suite.xlsx";
         Workbook workbook = ExcelUtil.getWorkbook(filePath);
         Sheet sheet = workbook.getSheet("report");
 
         //概述
-        Row row2 = sheet.getRow(2);
+        Row row2 = sheet.createRow(2);
         row2.createCell(0).setCellValue(report.getTotalTests());
         row2.createCell(1).setCellValue(report.getTotalSteps());
         row2.createCell(2).setCellValue(report.getTakeTime());
 
         //用例统计
-        Row row6 = sheet.getRow(6);
+        Row row6 = sheet.createRow(6);
         row6.createCell(0).setCellValue(report.getTestPassCount());
         row6.createCell(1).setCellValue(report.getTestFailCount());
         row6.createCell(2).setCellValue(report.getTestSkipCount());
 
         //步骤统计
-        Row row10 = sheet.getRow(10);
+        Row row10 = sheet.createRow(10);
         row10.createCell(0).setCellValue(report.getStepPassCount());
         row10.createCell(1).setCellValue(report.getStepFailCount());
         row10.createCell(2).setCellValue(report.getStepSkipCount());
