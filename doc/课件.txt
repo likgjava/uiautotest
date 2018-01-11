@@ -1102,6 +1102,12 @@ java -classpath "target/autotest-1.0-SNAPSHOT-jar-with-dependencies.jar" org.tes
 
 test-report/${BUILD_ID}
 
+java -classpath "target/autotest-1.0-SNAPSHOT-jar-with-dependencies.jar" org.testng.TestNG -testclass cn.itcast.autotest.po.m2.login.LoginTest -d test-report/%BUILD_ID%
+xcopy screenshot test-report\%BUILD_ID%\screenshot\ /Y
+
+
+
+
 
 
 ===================================================================================================================================
