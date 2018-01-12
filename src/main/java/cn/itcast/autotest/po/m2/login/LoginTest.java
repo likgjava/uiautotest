@@ -83,6 +83,8 @@ public class LoginTest {
         this.driver = DriverUtil.getDriver();
 
         this.loginProxy = new LoginProxy();
+
+        System.setProperty("org.uncommons.reportng.escape-output", "false");
     }
 
     @AfterTest

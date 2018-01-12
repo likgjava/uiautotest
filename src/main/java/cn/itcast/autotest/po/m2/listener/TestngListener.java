@@ -27,9 +27,9 @@ public class TestngListener extends TestListenerAdapter {
 
             //输出到测试报告中
             Reporter.setEscapeHtml(false);
-            String html = String.format("<img src='.%s' />error step screenshot", filePath);
+            String html = String.format("<img src='..%s' />error step screenshot", filePath);
             System.out.println("html======="+html);
-            Reporter.log("error-->" + html);
+            Reporter.log("error-->" + html, true);
         } catch (Exception e) {
             e.printStackTrace();
         }
