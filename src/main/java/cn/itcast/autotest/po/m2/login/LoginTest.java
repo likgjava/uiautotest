@@ -13,11 +13,13 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import org.uncommons.reportng.HTMLReporter;
+import org.uncommons.reportng.JUnitXMLReporter;
 
 /**
  * 登录流程测试
  */
-@Listeners(TestngListener.class)
+@Listeners({TestngListener.class, HTMLReporter.class, JUnitXMLReporter.class})
 public class LoginTest {
     private AndroidDriver<AndroidElement> driver;
     private LoginProxy loginProxy;
@@ -47,7 +49,7 @@ public class LoginTest {
     public void loginUsernameIsNull() throws Exception {
         loginProxy.login("", "meimima");
 
-        final String toast = "用户名密码不能为空";
+        final String toast = "用户名密码不能为空22";
         System.out.println("toast=======" + toast);
         final WebDriverWait wait = new WebDriverWait(driver, 5);
         String xpath = String.format(".//*[contains(@text,'%s')]", toast);
@@ -66,7 +68,7 @@ public class LoginTest {
     public void loginPasswordIsError() throws Exception {
         loginProxy.login("likg_java", "123");
 
-        String toast = "用户名或密码错误";
+        String toast = "用户名或密码错误22";
         System.out.println("toast=======" + toast);
         final WebDriverWait wait = new WebDriverWait(driver, 5);
         String xpath = String.format(".//*[contains(@text,'%s')]", toast);
