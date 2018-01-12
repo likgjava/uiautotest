@@ -13,7 +13,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * 点击、多击、长按
+ * 单击、多击、长按
  */
 public class Click {
 
