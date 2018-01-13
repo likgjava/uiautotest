@@ -4,7 +4,6 @@ import org.testng.annotations.Test;
 
 /**
  * 执行顺序测试
- * @author likg
  */
 public class TestngOrder {
     @Test

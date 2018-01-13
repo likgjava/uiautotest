@@ -5,7 +5,6 @@ import org.testng.annotations.Test;
 /**
  * 组测试
  *
- * @author likg
  */
 public class TestngGroupsOfGroups {
     @Test(groups = {"android.4"})

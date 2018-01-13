@@ -70,7 +70,4 @@ public class TestCase {
     public void setCaseStepList(List<CaseStep> caseStepList) {
         this.caseStepList = caseStepList;
     }
-
-
-
 }

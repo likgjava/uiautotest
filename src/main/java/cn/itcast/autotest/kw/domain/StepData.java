@@ -1,8 +1,5 @@
 package cn.itcast.autotest.kw.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 用例步骤测试数据
  */
@@ -27,7 +24,6 @@ public class StepData {
         this.caseCode = caseCode;
     }
 
-
     public String getStepCode() {
         return stepCode;
     }
@@ -51,6 +47,4 @@ public class StepData {
     public void setExpectedResult(String expectedResult) {
         this.expectedResult = expectedResult;
     }
-
-
 }

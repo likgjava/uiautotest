@@ -14,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * appium入门示例
- * @author likaige
  */
 public class HelloWorld {
 

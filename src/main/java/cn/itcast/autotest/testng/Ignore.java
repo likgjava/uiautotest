@@ -5,7 +5,6 @@ import org.testng.annotations.Test;
 
 /**
  * 忽略测试
- * @author likg
  */
 public class Ignore {
 

@@ -5,8 +5,6 @@ import org.testng.annotations.Test;
 
 /**
  * 依赖测试
- *
- * @author likg
  */
 public class XmlParameterTest {
     @Test

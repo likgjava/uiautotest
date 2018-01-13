@@ -6,7 +6,6 @@ import org.testng.annotations.Test;
 
 /**
  * 断言测试
- * @author likg
  */
 public class AssertTest {
     @Test

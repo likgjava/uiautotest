@@ -198,7 +198,6 @@ public class TestCaseUtil {
 
         //组装数据
         CaseList caseList = new CaseList();
-        //caseList.setType(caseType);
         for (String[] data : dataList) {
             TestCase testCase = new TestCase();
             testCase.setCaseCode(data[0]);
@@ -276,5 +275,4 @@ public class TestCaseUtil {
         }
         return null;
     }
-
 }

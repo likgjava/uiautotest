@@ -18,7 +18,12 @@ import java.io.IOException;
  */
 public class ReportUtil {
 
-
+    /**
+     * 生成测试报告
+     * @param caseList 用例列表
+     * @param report 报告数据
+     * @throws IOException ex
+     */
     public static void createReport(CaseList caseList, Report report) throws IOException {
         report.setTotalTests(caseList.getTestCaseList().size());
 
@@ -90,5 +95,4 @@ public class ReportUtil {
         fileOutputStream.close();
         workbook.close();
     }
-
 }

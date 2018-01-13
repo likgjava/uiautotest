@@ -5,8 +5,6 @@ import org.testng.annotations.Test;
 
 /**
  * 注解方式的参数化测试
- *
- * @author likg
  */
 public class DataProviderTest {
     @DataProvider

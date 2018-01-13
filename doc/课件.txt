@@ -512,11 +512,10 @@ group-by-instances	按照实例分组	true和false，默认false	group-by-instan
 
 TestNG运行JUnit
 TestNG可以运行JUnit测试类，需要把属性junit设置为true。运行JUnit的testng.xml如下
-package com.likg.uiautotest.testng;
+package cn.itcast.autotest.testng;
 import org.junit.Test;
 /**
  * junit测试类
- * @author likg
  */
 public class JunitTest {
     @Test

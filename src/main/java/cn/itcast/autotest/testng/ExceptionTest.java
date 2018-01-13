@@ -5,7 +5,6 @@ import org.testng.annotations.Test;
 /**
  * 异常测试
  *
- * @author likg
  */
 public class ExceptionTest {
 
