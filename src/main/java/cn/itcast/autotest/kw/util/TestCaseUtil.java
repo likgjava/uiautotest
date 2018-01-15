@@ -63,7 +63,15 @@ public class TestCaseUtil {
         return element;
     }
 
-    public static boolean executeOperation(WebElement element, String action, String inputData, String expectedResult) {
+    /**
+     * 执行操作
+     * @param element 元素
+     * @param action 动作
+     * @param inputData 输入数据
+     * @param expectedResult 期望结果
+     * @return 是否操作成功[true:操作成功; false:操作失败]
+     */
+    private static boolean executeOperation(WebElement element, String action, String inputData, String expectedResult) {
         switch (action) {
             case "sendKey": {
                 element.sendKeys(inputData);
@@ -87,6 +95,12 @@ public class TestCaseUtil {
         }
     }
 
+    /**
+     * 执行用例
+     * @param driver 驱动
+     * @param testCase 用例
+     * @throws IOException ex
+     */
     public static void executeTestCase(AndroidDriver<WebElement> driver, TestCase testCase) throws IOException {
         boolean allStepSuccess = true;
         for (CaseStep caseStep : testCase.getCaseStepList()) {
