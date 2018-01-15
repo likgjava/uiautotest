@@ -68,8 +68,7 @@ public class ReportUtil {
     }
 
     private static void updateReportToExcel(Report report) throws IOException {
-        String filePath = Constant.TEST_CASE_DATA_DIR + "suite.xlsx";
-        Workbook workbook = ExcelUtil.getWorkbook(filePath);
+        Workbook workbook = ExcelUtil.getWorkbook(Constant.SUITE_FILE_PATH);
         Sheet sheet = workbook.getSheet("report");
 
         //概述
@@ -90,7 +89,7 @@ public class ReportUtil {
         row10.createCell(1).setCellValue(report.getStepFailCount());
         row10.createCell(2).setCellValue(report.getStepSkipCount());
 
-        FileOutputStream fileOutputStream = new FileOutputStream(new File(filePath));
+        FileOutputStream fileOutputStream = new FileOutputStream(new File(Constant.SUITE_FILE_PATH));
         workbook.write(fileOutputStream);
         fileOutputStream.close();
         workbook.close();

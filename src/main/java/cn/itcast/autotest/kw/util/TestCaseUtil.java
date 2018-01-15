@@ -26,6 +26,12 @@ import java.util.List;
  */
 public class TestCaseUtil {
 
+    /**
+     * 查找元素
+     * @param driver 驱动
+     * @param caseStep 执行步骤
+     * @return 该用例步骤操作的元素
+     */
     public static WebElement findElement(AndroidDriver<WebElement> driver, CaseStep caseStep) {
         WebElement element;
         PageElement pageElement = caseStep.getPageElement();
@@ -81,20 +87,20 @@ public class TestCaseUtil {
         }
     }
 
-    public static void executeTestCase(AndroidDriver<WebElement> driver, TestCase testCase, boolean isSuite) throws IOException {
+    public static void executeTestCase(AndroidDriver<WebElement> driver, TestCase testCase) throws IOException {
         boolean allStepSuccess = true;
         for (CaseStep caseStep : testCase.getCaseStepList()) {
             boolean isSuccess = executeCaseStep(driver, caseStep);
 
             //更新执行结果
-            updateExecuteResult(testCase, caseStep, isSuccess, isSuite);
+            updateExecuteResult(testCase, caseStep, isSuccess);
 
             //保存步骤截图
             //saveScreenshot(driver, testCase, caseStep);
 
             //执行失败
             if (!isSuccess) {
-                saveScreenshot(driver, testCase, caseStep, isSuite);
+                saveScreenshot(driver, testCase, caseStep);
 
                 allStepSuccess = false;
                 break;
@@ -103,7 +109,7 @@ public class TestCaseUtil {
 
         if (allStepSuccess) {
             testCase.setExecuteResult(Constant.PASS);
-            updateExecuteResultOfTestCase(testCase.getPage(), testCase.getCaseCode(), Constant.PASS, isSuite);
+            updateExecuteResultOfTestCase(testCase.getCaseCode(), Constant.PASS);
         } else {
             testCase.setExecuteResult(Constant.FAIL);
         }
@@ -117,13 +123,13 @@ public class TestCaseUtil {
         }
     }
 
-    private static void saveScreenshot(AndroidDriver<WebElement> driver, TestCase testCase, CaseStep caseStep, boolean isSuite) throws IOException {
+    private static void saveScreenshot(AndroidDriver<WebElement> driver, TestCase testCase, CaseStep caseStep) throws IOException {
         File screenshot = driver.getScreenshotAs(OutputType.FILE);
         String fileName = new SimpleDateFormat("yyyyMMdd-HHmmss-SSS").format(new Date()) + ".jpg";
         File destFile = new File(Constant.TEST_CASE_DATA_DIR + "screenshot/" + fileName);
         FileUtils.copyFile(screenshot, destFile);
 
-        updateScreenshotOfCaseStep(testCase.getCaseCode(), caseStep.getStepCode(), "screenshot/" + fileName, isSuite);
+        updateScreenshotOfCaseStep(testCase.getCaseCode(), caseStep.getStepCode(), "screenshot/" + fileName);
     }
 
 
@@ -145,56 +151,38 @@ public class TestCaseUtil {
     }
 
 
-    private static void updateExecuteResult(TestCase testCase, CaseStep caseStep, boolean isSuccess, boolean isSuite) throws IOException {
-        String result = isSuccess ? "PASS" : "FAIL";
+    private static void updateExecuteResult(TestCase testCase, CaseStep caseStep, boolean isSuccess) throws IOException {
+        String result = isSuccess ? Constant.PASS : Constant.FAIL;
         caseStep.setStepExecuteResult(result);
-        updateExecuteResultOfCaseStep(testCase.getCaseCode(), caseStep.getStepCode(), result, isSuite);
+        updateExecuteResultOfCaseStep(testCase.getCaseCode(), caseStep.getStepCode(), result);
 
         if (!isSuccess) {
-            updateExecuteResultOfTestCase(testCase.getPage(), testCase.getCaseCode(), result, isSuite);
+            updateExecuteResultOfTestCase(testCase.getCaseCode(), result);
         }
     }
 
-    private static void updateExecuteResultOfTestCase(String page, String caseCode, String result, boolean isSuite) throws IOException {
-        String filePath;
-        if (isSuite) {
-            filePath = Constant.TEST_CASE_DATA_DIR + "suite.xlsx";
-        } else {
-            filePath = Constant.TEST_CASE_DATA_DIR + "scene.xlsx";
-        }
-        int rowNum = ExcelUtil.getRowNum(filePath, "testCase", 0, caseCode);
+    private static void updateExecuteResultOfTestCase(String caseCode, String result) throws IOException {
+        int rowNum = ExcelUtil.getRowNum(Constant.SUITE_FILE_PATH, "testCase", 0, caseCode);
 
-        ExcelUtil.setCellValue(filePath, "testCase", rowNum, 3, result);
+        ExcelUtil.setCellValue(Constant.SUITE_FILE_PATH, "testCase", rowNum, 3, result);
     }
 
-    private static void updateExecuteResultOfCaseStep(String caseCode, String stepCode, String result, boolean isSuite) throws IOException {
-        String filePath;
-        if (isSuite) {
-            filePath = Constant.TEST_CASE_DATA_DIR + "suite.xlsx";
-        } else {
-            filePath = Constant.TEST_CASE_DATA_DIR + "scene.xlsx";
-        }
-        int rowNum = ExcelUtil.getRowNum(filePath, "stepData", 0, caseCode, 1, stepCode);
+    private static void updateExecuteResultOfCaseStep(String caseCode, String stepCode, String result) throws IOException {
+        int rowNum = ExcelUtil.getRowNum(Constant.SUITE_FILE_PATH, "stepData", 0, caseCode, 1, stepCode);
         System.out.println("rowNum===" + rowNum);
 
-        ExcelUtil.setCellValue(filePath, "stepData", rowNum, 5, result);
+        ExcelUtil.setCellValue(Constant.SUITE_FILE_PATH, "stepData", rowNum, 5, result);
     }
 
-    private static void updateScreenshotOfCaseStep(String caseCode, String stepCode, String screenshotPath, boolean isSuite) throws IOException {
-        String filePath;
-        if (isSuite) {
-            filePath = Constant.TEST_CASE_DATA_DIR + "suite.xlsx";
-        } else {
-            filePath = Constant.TEST_CASE_DATA_DIR + "scene.xlsx";
-        }
-        int rowNum = ExcelUtil.getRowNum(filePath, "stepData", 0, caseCode, 1, stepCode);
+    private static void updateScreenshotOfCaseStep(String caseCode, String stepCode, String screenshotPath) throws IOException {
+        int rowNum = ExcelUtil.getRowNum(Constant.SUITE_FILE_PATH, "stepData", 0, caseCode, 1, stepCode);
 
-        ExcelUtil.setCellValueOfLink(filePath, "stepData", rowNum, 6, screenshotPath);
+        ExcelUtil.setCellValueOfLink(Constant.SUITE_FILE_PATH, "stepData", rowNum, 6, screenshotPath);
     }
 
     public static CaseList loadCaseList() throws IOException {
         //获取用例列表数据
-        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + "suite.xlsx", "testCase", 1);
+        List<String[]> dataList = ExcelUtil.getAllData(Constant.SUITE_FILE_PATH, "testCase", 1);
 
         //组装数据
         CaseList caseList = new CaseList();
@@ -242,7 +230,7 @@ public class TestCaseUtil {
 
     private static StepData loadStepData(String caseCode, String stepCode) throws IOException {
         //获取步骤测试数据
-        List<String[]> dataList = ExcelUtil.getAllData(Constant.TEST_CASE_DATA_DIR + "suite.xlsx", "stepData", 1);
+        List<String[]> dataList = ExcelUtil.getAllData(Constant.SUITE_FILE_PATH, "stepData", 1);
 
         //组装数据
         for (String[] data : dataList) {

@@ -1,4 +1,4 @@
-package cn.itcast.autotest.kw.run;
+package cn.itcast.autotest.kw;
 
 import cn.itcast.autotest.kw.util.DriverUtil;
 import io.appium.java_client.android.AndroidDriver;
@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-public class CodeTest {
+public class TempTest {
 
     private AndroidDriver<WebElement> driver;
 

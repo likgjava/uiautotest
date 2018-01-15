@@ -1,4 +1,4 @@
-package cn.itcast.autotest.kw.run;
+package cn.itcast.autotest.kw;
 
 import cn.itcast.autotest.kw.domain.CaseList;
 import cn.itcast.autotest.kw.domain.Report;
@@ -39,7 +39,7 @@ public class RunSuite {
         //执行用例
         for (TestCase testCase : caseList.getTestCaseList()) {
             System.out.println(String.format("------start execute case=[%s]", testCase.getCaseDesc()));
-            TestCaseUtil.executeTestCase(driver, testCase, true);
+            TestCaseUtil.executeTestCase(driver, testCase);
             System.out.println(String.format("------end execute case=[%s]", testCase.getCaseDesc()));
         }
         report.setEndTime(System.currentTimeMillis());

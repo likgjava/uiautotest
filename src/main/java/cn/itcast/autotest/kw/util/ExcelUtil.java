@@ -1,5 +1,6 @@
 package cn.itcast.autotest.kw.util;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -25,42 +26,72 @@ import java.util.List;
  */
 public class ExcelUtil {
 
+    /**
+     * 设置单元格内容
+     *
+     * @param filePath  excel文件的路径
+     * @param sheetName sheet的名称
+     * @param row       行
+     * @param column    列
+     * @param value     要设置的内容
+     * @throws IOException ex
+     */
     public static void setCellValue(String filePath, String sheetName, int row, int column, String value) throws IOException {
-        Workbook workbook = getWorkbook(filePath);
-        Sheet sheet = workbook.getSheet(sheetName);
-        Row rowObj = sheet.getRow(row);
-        rowObj.createCell(column).setCellValue(value);
+        Workbook workbook = null;
+        FileOutputStream fileOutputStream = null;
+        try {
+            workbook = getWorkbook(filePath);
+            Sheet sheet = workbook.getSheet(sheetName);
+            Row rowObj = sheet.getRow(row);
+            rowObj.createCell(column).setCellValue(value);
 
-        FileOutputStream fileOutputStream = new FileOutputStream(new File(filePath));
-        workbook.write(fileOutputStream);
-        fileOutputStream.close();
-        workbook.close();
+            fileOutputStream = new FileOutputStream(new File(filePath));
+            workbook.write(fileOutputStream);
+        } finally {
+            IOUtils.closeQuietly(fileOutputStream);
+            IOUtils.closeQuietly(workbook);
+        }
     }
 
-    public static void setCellValueOfLink(String filePath, String sheetName, int row, int column, String screenshotPath) throws IOException {
-        Workbook workbook = getWorkbook(filePath);
-        Sheet sheet = workbook.getSheet(sheetName);
-        Row rowObj = sheet.getRow(row);
-        Cell cell = rowObj.createCell(column);
+    /**
+     * 向单元格中插入图片链接
+     *
+     * @param filePath  excel文件的路径
+     * @param sheetName sheet的名称
+     * @param row       行
+     * @param column    列
+     * @param imgPath   图片路径
+     * @throws IOException
+     */
+    public static void setCellValueOfLink(String filePath, String sheetName, int row, int column, String imgPath) throws IOException {
+        Workbook workbook = null;
+        FileOutputStream fileOutputStream = null;
+        try {
+            workbook = getWorkbook(filePath);
+            Sheet sheet = workbook.getSheet(sheetName);
+            Row rowObj = sheet.getRow(row);
+            Cell cell = rowObj.createCell(column);
 
-        CreationHelper createHelper = workbook.getCreationHelper();
-        cell.setCellValue("截图");
-        Hyperlink link = createHelper.createHyperlink(HyperlinkType.FILE);
-        link.setAddress(screenshotPath);
-        cell.setHyperlink(link);
+            CreationHelper createHelper = workbook.getCreationHelper();
+            cell.setCellValue("截图");
+            Hyperlink link = createHelper.createHyperlink(HyperlinkType.FILE);
+            link.setAddress(imgPath);
+            cell.setHyperlink(link);
 
-        //超级链接的样式,蓝色并接默认有下划线
-        CellStyle linkStyle = workbook.createCellStyle();
-        Font linkFont = workbook.createFont();
-        linkFont.setUnderline(Font.U_SINGLE);
-        linkFont.setColor(IndexedColors.BLUE.getIndex());
-        linkStyle.setFont(linkFont);
-        cell.setCellStyle(linkStyle);
+            //超级链接的样式,蓝色并接默认有下划线
+            CellStyle linkStyle = workbook.createCellStyle();
+            Font linkFont = workbook.createFont();
+            linkFont.setUnderline(Font.U_SINGLE);
+            linkFont.setColor(IndexedColors.BLUE.getIndex());
+            linkStyle.setFont(linkFont);
+            cell.setCellStyle(linkStyle);
 
-        FileOutputStream fileOutputStream = new FileOutputStream(new File(filePath));
-        workbook.write(fileOutputStream);
-        fileOutputStream.close();
-        workbook.close();
+            fileOutputStream = new FileOutputStream(new File(filePath));
+            workbook.write(fileOutputStream);
+        } finally {
+            IOUtils.closeQuietly(fileOutputStream);
+            IOUtils.closeQuietly(workbook);
+        }
     }
 
     public static int getRowNum(String filePath, String sheetName, int column, String keyWord) throws IOException {
@@ -96,32 +127,44 @@ public class ExcelUtil {
     }
 
 
+    /**
+     * 获取指定sheet中的全部数据
+     *
+     * @param filePath    excel文件路径
+     * @param sheetName   sheet名称
+     * @param startRowNum 指定开始行
+     * @return 数据
+     * @throws IOException ex
+     */
     public static List<String[]> getAllData(String filePath, String sheetName, int startRowNum) throws IOException {
         List<String[]> dataList = new ArrayList<>();
-        Workbook workbook = getWorkbook(filePath);
-        Sheet sheet = workbook.getSheet(sheetName);
+        Workbook workbook = null;
+        try {
+            workbook = getWorkbook(filePath);
+            Sheet sheet = workbook.getSheet(sheetName);
 
-        int totalColumn = sheet.getRow(0).getLastCellNum();
+            int totalColumn = sheet.getRow(0).getLastCellNum();
 
-        for (int i = startRowNum; i <= sheet.getLastRowNum(); i++) {
-            Row row = sheet.getRow(i);
-            String[] rowData = new String[totalColumn];
-            for (int j = 0; j < totalColumn; j++) {
-                Cell cell = row.getCell(j);
-                if (cell != null) {
-                    rowData[j] = cell.getStringCellValue();
+            for (int i = startRowNum; i <= sheet.getLastRowNum(); i++) {
+                Row row = sheet.getRow(i);
+                String[] rowData = new String[totalColumn];
+                for (int j = 0; j < totalColumn; j++) {
+                    Cell cell = row.getCell(j);
+                    if (cell != null) {
+                        rowData[j] = cell.getStringCellValue();
+                    }
                 }
+                dataList.add(rowData);
             }
-            dataList.add(rowData);
+        } finally {
+            IOUtils.closeQuietly(workbook);
         }
-
-        workbook.close();
-
         return dataList;
     }
 
     /**
      * 获取Workbook对象
+     *
      * @param filePath excel文件路径
      * @return Workbook
      * @throws IOException ex
