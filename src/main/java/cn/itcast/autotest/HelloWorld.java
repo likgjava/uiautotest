@@ -7,7 +7,6 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
@@ -40,10 +39,9 @@ public class HelloWorld {
 
     @BeforeTest
     public void beforeTest() throws MalformedURLException {
-        File apk = new File("D://apk/zhihu.apk");
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("deviceName", "mi");
-        capabilities.setCapability("app", apk.getAbsolutePath());
+        capabilities.setCapability("deviceName", "emulator");
+        capabilities.setCapability("app", "D:/apk/zhihu.apk");
 
         URL url = new URL("http://127.0.0.1:4723/wd/hub/");
         driver = new AndroidDriver<>(url, capabilities);

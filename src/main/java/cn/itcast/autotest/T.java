@@ -32,7 +32,7 @@ public class T {
 
 
         String data = FileUtils.readFileToString(new File(System.getProperty("user.dir") + "/data/t.txt"));
-        System.out.println("data===="+data);
+        System.out.println("data====" + data);
         Assert.assertEquals(data, "中文123");
         System.out.println("通过了.......11111");
 
@@ -50,6 +50,13 @@ public class T {
 
         "".charAt(2);
 
+    }
+
+    @Test
+    public void f() {
+        File apk = new File("D:/apk/zhihu.apk");
+        String absolutePath = apk.getAbsolutePath();
+        System.out.println(absolutePath);
     }
 
 }
