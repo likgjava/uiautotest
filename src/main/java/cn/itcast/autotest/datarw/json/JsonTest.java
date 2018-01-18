@@ -1,4 +1,4 @@
-package cn.itcast.autotest.json;
+package cn.itcast.autotest.datarw.json;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;

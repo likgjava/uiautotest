@@ -1,4 +1,4 @@
-package cn.itcast.autotest.db;
+package cn.itcast.autotest.datarw.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

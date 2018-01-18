@@ -1,4 +1,4 @@
-package cn.itcast.autotest.xml;
+package cn.itcast.autotest.datarw.xml;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
