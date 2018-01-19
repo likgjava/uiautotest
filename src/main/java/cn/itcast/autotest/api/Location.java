@@ -1,7 +1,6 @@
 package cn.itcast.autotest.api;
 
 import io.appium.java_client.android.AndroidDriver;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterTest;
@@ -13,70 +12,124 @@ import java.net.URL;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 元素定位
+ */
 public class Location {
 
     private AndroidDriver<WebElement> driver;
 
     @Test
+    public void getPageSource() {
+        String pageSource = driver.getPageSource();
+        System.out.println(pageSource);
+    }
+
+    @Test
     public void byId() {
         //获取单个匹配的元素
-        WebElement element = driver.findElementById("com.miui.home:id/search_but");
-        WebElement element2 = driver.findElement(By.id("com.miui.home:id/search_but"));
+        WebElement element = driver.findElementById("com.android.dialer:id/floating_action_button");
+        //WebElement element = driver.findElement(By.id("com.android.dialer:id/floating_action_button"));
+        System.out.println("name=" + element.getAttribute("name"));
 
         //获取多个匹配的元素
-        List<WebElement> elementList = driver.findElementsById("com.miui.home:id/search_but");
-        List<WebElement> elementList2 = driver.findElements(By.id("com.miui.home:id/search_but"));
+        List<WebElement> elementList = driver.findElementsById("com.android.dialer:id/floating_action_button");
+        //List<WebElement> elementList = driver.findElements(By.id("com.android.dialer:id/floating_action_button"));
+        System.out.println("elementList.size=" + elementList.size());
     }
 
     @Test
     public void byClassName() {
         //获取单个匹配的元素
-        WebElement element = driver.findElementByClassName("android.widget.TextView");
-        WebElement element2 = driver.findElement(By.className("android.widget.TextView"));
+        WebElement element = driver.findElementByClassName("android.widget.ImageButton");
+        //WebElement element = driver.findElement(By.className("android.widget.ImageButton"));
+        System.out.println("name=" + element.getAttribute("name"));
 
         //获取多个匹配的元素
-        List<WebElement> elementList = driver.findElementsByClassName("android.widget.TextView");
-        List<WebElement> elementList2 = driver.findElements(By.className("android.widget.TextView"));
+        List<WebElement> elementList = driver.findElementsByClassName("android.widget.ImageButton");
+        //List<WebElement> elementList = driver.findElements(By.className("android.widget.ImageButton"));
+        System.out.println("elementList.size=" + elementList.size());
+        for (WebElement e : elementList) {
+            System.out.println("name=" + e.getAttribute("name"));
+        }
     }
 
     @Test
-    public void byAccessibilityId() throws InterruptedException {
-        Thread.sleep(3000);
+    public void byName() {
+        //该方式已不支持
+        WebElement element = driver.findElementByName("dial pad");
+        System.out.println(element);
+    }
 
-        String pageSource = driver.getPageSource();
-        System.out.println("pageSource=="+pageSource);
-
-        //WebElement element = driver.findElementByName("Add a contact");
-        //WebElement element = driver.findElementByAndroidUIAutomator("text(\"Add a contact\")");
+    @Test
+    public void byAccessibilityId() {
         WebElement element = driver.findElementByAccessibilityId("dial pad");
-        System.out.println("element===="+element);
-        element.click();
+        System.out.println("name=" + element.getAttribute("name"));
+    }
 
-        driver.findElementByAndroidUIAutomator("new UiSelector().text(\"每日推荐\")");
+    @Test
+    public void byXPath() {
+        WebElement element = driver.findElementByXPath("//android.widget.ImageButton");
+        System.out.println("name=" + element.getAttribute("name"));
 
-        Thread.sleep(10000);
+        //属性等于指定字符
+        element = driver.findElementByXPath("//android.widget.ImageButton[@index=2]");
+        System.out.println("name=" + element.getAttribute("name"));
+
+        //属性包含指定字符
+        element = driver.findElementByXPath("//android.widget.TextView[contains(@text, 'Add')]");
+        System.out.println("name=" + element.getAttribute("name"));
+    }
+
+    @Test
+    public void byUiAutomator() {
+        //text定位
+        WebElement element = driver.findElementByAndroidUIAutomator("new UiSelector().text(\"Add a favorite\")");
+        System.out.println("name=" + element.getAttribute("name"));
+
+        //resourceId定位
+        element = driver.findElementByAndroidUIAutomator("new UiSelector().resourceId(\"com.android.dialer:id/floating_action_button\")");
+        System.out.println("name=" + element.getAttribute("name"));
+
+        //className定位
+        element = driver.findElementByAndroidUIAutomator("new UiSelector().className(\"android.widget.ImageButton\")");
+        System.out.println("name=" + element.getAttribute("name"));
+
+        //description定位
+        element = driver.findElementByAndroidUIAutomator("new UiSelector().description(\"dial pad\")");
+        System.out.println("name=" + element.getAttribute("name"));
+
+        //index定位
+        List<WebElement> list = driver.findElementsByAndroidUIAutomator("new UiSelector().index(1)");
+        System.out.println("list.size=" + list.size());
+
+        //多个属性自由组合
+        element = driver.findElementByAndroidUIAutomator("new UiSelector().className(\"android.widget.ImageButton\").index(2)");
+        System.out.println("name=" + element.getAttribute("name"));
+
+        //模糊匹配
+        element = driver.findElementByAndroidUIAutomator("new UiSelector().textContains(\"Add\")");
+        System.out.println("name=" + element.getAttribute("name"));
+
+        //正则表达式匹配
+        element = driver.findElementByAndroidUIAutomator("new UiSelector().textMatches(\"^Add.*\")");
+        System.out.println("name=" + element.getAttribute("name"));
     }
 
     @BeforeTest
-    public void  beforeTest() throws MalformedURLException {
+    public void beforeTest() throws MalformedURLException {
         System.out.println("beforeTest....");
         DesiredCapabilities capabilities = new DesiredCapabilities();
-
-        capabilities.setCapability("platformName", "Android");
-        capabilities.setCapability("deviceName","emulator");
-        capabilities.setCapability("platformVersion", "6.0");
+        capabilities.setCapability("deviceName", "emulator");
         capabilities.setCapability("appPackage", "com.android.dialer");
         capabilities.setCapability("appActivity", ".DialtactsActivity");
-
-        capabilities.setCapability("unicodeKeyboard", "true");
-        capabilities.setCapability("resetKeyboard", "true");
 
         driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @AfterTest
-    public void afterTest(){
+    public void afterTest() {
         driver.quit();
     }
 }
