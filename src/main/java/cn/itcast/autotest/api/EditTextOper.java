@@ -47,7 +47,6 @@ public class EditTextOper {
     public void  beforeTest() throws MalformedURLException {
         System.out.println("beforeTest....");
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("platformName", "Android");
         capabilities.setCapability("deviceName","emulator");
         capabilities.setCapability("appPackage", "com.android.dialer");
         capabilities.setCapability("appActivity", ".DialtactsActivity");

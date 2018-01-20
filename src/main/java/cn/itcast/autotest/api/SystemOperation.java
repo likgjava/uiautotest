@@ -4,14 +4,12 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -63,18 +61,14 @@ public class SystemOperation {
     public void operation2() throws InterruptedException {
         //打开通知栏
         driver.openNotifications();
-
         Thread.sleep(3000);
-        System.out.println("runAppInBackground....start");
 
         //让app在后台运行指定的秒数
-        //与resetApp类似，区别是resetApp关闭后立即启动，而这个方法是关闭后等待seconds秒后再启动
+        System.out.println("runAppInBackground....start");
         driver.runAppInBackground(3);
         System.out.println("runAppInBackground....end");
 
-
         Thread.sleep(3000);
-
     }
 
     @Test
@@ -120,7 +114,7 @@ public class SystemOperation {
         capabilities.setCapability("deviceName", "emulator");
         capabilities.setCapability("appPackage", "com.android.dialer");
         capabilities.setCapability("appActivity", ".DialtactsActivity");
-        driver = new AndroidDriver<AndroidElement>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+        driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
     }
 
     @AfterTest

@@ -1,6 +1,5 @@
 package cn.itcast.autotest.api;
 
-import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import org.openqa.selenium.By;
@@ -16,16 +15,35 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
- * 点击、多击、长按
+ * 等待技巧
  */
 public class WaitTest {
 
     private AndroidDriver<AndroidElement> driver;
 
     @Test
-    public void waitTest() throws InterruptedException {
+    public void implicitlyWait() throws InterruptedException {
+        System.out.println("implicitlyWait...");
+        Thread.sleep(5000);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        System.out.println("start time===" + sdf.format(new Date()));
+        String id = "com.android.settings:id/search666";
+        try {
+            driver.findElementById(id);
+        } catch (Exception e) {
+            System.out.println("没找到。。。。。。");
+            System.out.println("end time=====" + sdf.format(new Date()));
+        }
+
+        Thread.sleep(10000);
+    }
+
+    @Test
+    public void explicitlyWait() throws InterruptedException {
         System.out.println("waitTest...");
         Thread.sleep(5000);
 
@@ -52,6 +70,10 @@ public class WaitTest {
         capabilities.setCapability("appPackage", "com.android.settings");
         capabilities.setCapability("appActivity", "com.android.settings.Settings");
         driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+
+        //driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+        //driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
     }
 
     @AfterTest

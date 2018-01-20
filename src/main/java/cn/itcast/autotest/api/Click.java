@@ -25,14 +25,14 @@ public class Click {
         Thread.sleep(5000);
 
         //点击显示键盘按钮
-        AndroidElement button = driver.findElement(By.id("com.android.dialer:id/floating_action_button_container"));
+        AndroidElement button = driver.findElementById("com.android.dialer:id/floating_action_button_container");
         button.click();
         Thread.sleep(3000);
 
         //点击号码
-        AndroidElement one = driver.findElement(By.id("com.android.dialer:id/one"));
-        AndroidElement two = driver.findElement(By.id("com.android.dialer:id/two"));
-        AndroidElement three = driver.findElement(By.id("com.android.dialer:id/three"));
+        AndroidElement one = driver.findElementById("com.android.dialer:id/one");
+        AndroidElement two = driver.findElementById("com.android.dialer:id/two");
+        AndroidElement three = driver.findElementById("com.android.dialer:id/three");
         one.tap(1, 100);
         driver.tap(1, two, 100);
         new TouchAction(driver).tap(three).release().perform();

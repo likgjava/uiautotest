@@ -48,7 +48,7 @@ public class ToastTest {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("deviceName", "emulator");
         capabilities.setCapability("appPackage", "net.csdn.csdnplus");
-        capabilities.setCapability("appActivity", "net.csdn.csdnplus.activity.SplashActivity");
+        capabilities.setCapability("appActivity", ".activity.SplashActivity");
 
         capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "Uiautomator2");
 
