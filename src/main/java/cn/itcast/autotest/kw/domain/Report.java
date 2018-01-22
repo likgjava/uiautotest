@@ -1,5 +1,8 @@
 package cn.itcast.autotest.kw.domain;
 
+/**
+ * 测试报告数据
+ */
 public class Report {
 
     // 总用例数
