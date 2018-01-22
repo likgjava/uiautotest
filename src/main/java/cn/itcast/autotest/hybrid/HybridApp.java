@@ -1,11 +1,8 @@
 package cn.itcast.autotest.hybrid;
 
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
-import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
-import org.openqa.selenium.By;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -13,6 +10,7 @@ import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -25,11 +23,14 @@ public class HybridApp {
         System.out.println("test....");
         Thread.sleep(5000);
 
-        MobileElement element = driver.findElementById("com.zhihu.android:id/ad_float")
-                .findElement(By.xpath("//android.view.ViewGroup[@index=0]"));
-        System.out.println(element.getTagName());
+        driver.findElementById("net.csdn.csdnplus:id/editTextUserName").sendKeys("likg_java");
+        driver.findElementById("net.csdn.csdnplus:id/password").sendKeys("meimima");
+        driver.findElementById("net.csdn.csdnplus:id/csdnsign_in_button").click();
+        driver.findElementByXPath("//android.widget.Button[@text='关闭']").click();
 
-        element.click();
+        String xpath = "//android.widget.ListView[@resource-id='android:id/list']//android.widget.LinearLayout[@index=0]";
+        driver.findElementByXPath(xpath).click();
+
         Thread.sleep(5000);
 
         String context = driver.getContext();
@@ -45,11 +46,14 @@ public class HybridApp {
 
         pageSource = driver.getPageSource();
         System.out.println("pageSource==2=" + pageSource);
+        System.out.println("----------------------------------------------------");
 
         Thread.sleep(3000);
 
-        AndroidElement elementByClassName = driver.findElementByClassName("AnswerItem-appViewFootnotes");
-        System.out.println("text==" + elementByClassName.getText());
+        List<AndroidElement> imgList = driver.findElementsByTagName("img");
+        for (AndroidElement img : imgList) {
+            System.out.println("src=" + img.getAttribute("src"));
+        }
 
         Thread.sleep(10000);
     }
@@ -58,12 +62,12 @@ public class HybridApp {
     public void beforeTest() throws MalformedURLException {
         System.out.println("beforeTest....");
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "emulator");
-        capabilities.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.zhihu.android");
-        capabilities.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, "com.zhihu.android.app.ui.activity.MainActivity");
+        capabilities.setCapability("deviceName", "emulator");
+        capabilities.setCapability("appPackage", "net.csdn.csdnplus");
+        capabilities.setCapability("appActivity", "net.csdn.csdnplus.activity.SplashActivity");
+        capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "Uiautomator2");
 
-        URL url = new URL("http://127.0.0.1:4723/wd/hub/");
-        driver = new AndroidDriver<>(url, capabilities);
+        driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub/"), capabilities);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 

@@ -28,7 +28,7 @@ public class WebTest {
     }
 
     @BeforeTest
-    public void  beforeTest() throws MalformedURLException {
+    public void beforeTest() throws MalformedURLException {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "emulator");
         capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, "browser");
@@ -38,7 +38,7 @@ public class WebTest {
     }
 
     @AfterTest
-    public void afterTest(){
+    public void afterTest() {
         driver.quit();
     }
 }
