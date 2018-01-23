@@ -5,8 +5,16 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * adb 命令操作工具类
+ */
 public class AdbUtil {
 
+    /**
+     * 获取连接的设备列表
+     * @return 设备id列表
+     * @throws Exception ex
+     */
     public static List<String> getDevices() throws Exception {
         List<String> devices = new ArrayList<>();
         List<String> resultList = execAdb("devices");
@@ -19,7 +27,7 @@ public class AdbUtil {
         return devices;
     }
 
-    public static List<String> execAdb(String command) throws Exception {
+    private static List<String> execAdb(String command) throws Exception {
         return SystemUtil.execCmd("adb " + command);
     }
 
