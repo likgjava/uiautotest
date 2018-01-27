@@ -9,7 +9,6 @@ import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.TimeUnit;
 
 /**
  * appium入门示例
@@ -45,7 +44,6 @@ public class HelloWorld {
 
         URL url = new URL("http://127.0.0.1:4723/wd/hub/");
         driver = new AndroidDriver<>(url, capabilities);
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @AfterTest
