@@ -63,6 +63,12 @@ public class SystemUtil {
         return lines;
     }
 
+    /**
+     * 根据端口号获取对应的进程id
+     * @param port 端口号
+     * @return 进程id
+     * @throws Exception ex
+     */
     public static String getPidByPort(int port) throws Exception {
         List<String> resultList = execCmd("netstat -ano | findstr " + port);
         System.out.println(resultList);
@@ -78,6 +84,11 @@ public class SystemUtil {
         return null;
     }
 
+    /**
+     * 杀掉进程
+     * @param pid 进程id
+     * @throws Exception ex
+     */
     public static void killWithPid(String pid) throws Exception {
         String command = "cmd /c taskkill /F /pid " + pid + " /T";
         System.out.println("killWithPid command=" + command);
