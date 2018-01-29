@@ -26,6 +26,27 @@ public class Location {
     }
 
     @Test
+    public void getAttribute() {
+        WebElement element = driver.findElementById("com.android.dialer:id/floating_action_button");
+        //获取标签名称
+        String tagName = element.getTagName();
+        System.out.println("tagName=" + tagName);
+        //获取text的属性值
+        String text = element.getText();
+        System.out.println("text=" + text);
+
+        //获取content-desc或text的属性值
+        String name = element.getAttribute("name");
+        System.out.println("name=" + name);
+        //获取class的属性值
+        String className = element.getAttribute("className");
+        System.out.println("className=" + className);
+        //获取resource-id的属性值
+        String resourceId = element.getAttribute("resourceId");
+        System.out.println("resourceId=" + resourceId);
+    }
+
+    @Test
     public void byId() {
         //获取单个匹配的元素
         WebElement element = driver.findElementById("com.android.dialer:id/floating_action_button");
